@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.input.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.raiffeisen.ipricer.fxdesigner.FXDesigner">
+   <children>
+      <VBox prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <MenuBar>
+              <menus>
+                <Menu text="File">
+                  <items>
+                        <MenuItem fx:id="menuOpen" mnemonicParsing="false" onAction="#openDefinitionFile" text="Open" />
+                        <MenuItem fx:id="menuGenerate" mnemonicParsing="false" onAction="#generateDefinitionFile" text="Generate Definition File" />
+                    <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#saveDefinitionFile" text="Save" />
+                        <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#closeGUIDesigner" text="Close" />
+                  </items>
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="F" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Edit">
+                  <items>
+                    <MenuItem fx:id="menuDelete" mnemonicParsing="false" text="Delete" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Help">
+                  <items>
+                    <MenuItem fx:id="menuAbout" mnemonicParsing="false" text="About" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <SplitPane dividerPositions="0.1" prefHeight="800.0" prefWidth="1200.0" VBox.vgrow="ALWAYS">
+               <items>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Label text="Methode" />
+                        <TextField fx:id="methodName" />
+                        <Label text="Methode Label" />
+                        <TextField fx:id="methodLabel" />
+                        <Label text="Parent Label" />
+                        <TextField fx:id="parentLabel" />
+                        <Label text="Child Label" />
+                        <TextField fx:id="childLabel" />
+                        <VBox prefHeight="604.0" prefWidth="117.0" VBox.vgrow="ALWAYS">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="224.0" text="Komponenten" textAlignment="CENTER" VBox.vgrow="ALWAYS">
+                                 <font>
+                                    <Font size="28.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton mnemonicParsing="false" text="Direct Zahl">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Direct String">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Direct Date">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Separator">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Indirect Zahl">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Indirect String">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </RadioButton>
+                              <RadioButton mnemonicParsing="false" text="Indirect Date">
+                                 <font>
+                                    <Font size="19.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </VBox>
+                     </children>
+                  </VBox>
+                  <SplitPane dividerPositions="0.85" prefHeight="160.0" prefWidth="200.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <TabPane prefHeight="798.0" prefWidth="680.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <tabs>
+                                  <Tab fx:id="methodTab" text="Methode">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="770.0" prefWidth="685.0">
+                                             <children>
+                                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Label prefHeight="29.0" prefWidth="147.0" text="Timer Methodenebene:" />
+                                                   </children>
+                                                </HBox>
+                                                <GridPane fx:id="methodGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                    </content>
+                                  </Tab>
+                                  <Tab fx:id="parentTab" text="Parent">
+                                    <content>
+                                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <HBox prefHeight="28.0" prefWidth="820.0">
+                                                   <children>
+                                                      <Label prefHeight="28.0" prefWidth="130.0" text="Timer Parentebene:" />
+                                                   </children>
+                                                </HBox>
+                                                <GridPane fx:id="parentGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                </GridPane>
+                                             </children></AnchorPane>
+                                    </content>
+                                  </Tab>
+                                    <Tab fx:id="childTab" text="Child">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <HBox prefHeight="28.0" prefWidth="820.0">
+                                                   <children>
+                                                      <Label prefHeight="28.0" prefWidth="130.0" text="Timer Childebene:" />
+                                                   </children>
+                                                </HBox>
+                                                <GridPane fx:id="childGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                </GridPane>
+                                             </children></AnchorPane>
+                                      </content>
+                                    </Tab>
+                                </tabs>
+                              </TabPane>
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+                           <children>
+                              <GridPane prefHeight="773.0" prefWidth="271.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                <columnConstraints>
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label text="Datatype" GridPane.rowIndex="1" />
+                                    <Label text="internalFieldName" GridPane.rowIndex="2" />
+                                    <Label text="externalName" GridPane.rowIndex="3" />
+                                    <Label text="Labeltext" GridPane.rowIndex="4" />
+                                    <Label text="Role Access" GridPane.rowIndex="5" />
+                                    <Label text="Record Type" GridPane.rowIndex="6" />
+                                    <Label text="Max Length" GridPane.rowIndex="7" />
+                                    <Label text="Width" GridPane.rowIndex="8" />
+                                    <Label text="Procedurename for values" GridPane.rowIndex="9" />
+                                    <Label text="strict" GridPane.rowIndex="10" />
+                                    <Label text="init Value" GridPane.rowIndex="11" />
+                                    <Label text="Separator" GridPane.rowIndex="12" />
+                                    <Label text="show in underlyingList" GridPane.rowIndex="13" />
+                                    <Label text="underlyingList Width" GridPane.rowIndex="14" />
+                                    <Label text="show in optionList" GridPane.rowIndex="15" />
+                                    <Label text="optionList Width" GridPane.rowIndex="16" />
+                                    <Label text="grid X" GridPane.rowIndex="17" />
+                                    <Label text="grid Y" GridPane.rowIndex="18" />
+                                    <TextField fx:id="propertyInternalFieldname" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField fx:id="propertyExternalName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <TextField fx:id="propertyLabeltext" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <TextField fx:id="propertyMaxLength" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                    <TextField fx:id="propertyWidth" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                    <TextField fx:id="propertyProcedureName" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                    <TextField fx:id="propertyInitValue" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                                    <TextField fx:id="propertyGridX" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                                    <TextField fx:id="propertyGridY" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                                    <CheckBox fx:id="propertyStrict" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                    <ChoiceBox fx:id="propertyDatatype" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <ChoiceBox fx:id="propertyRoleAccess" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <ChoiceBox fx:id="propertyRecordType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <CheckBox fx:id="propertySeparator" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                                    <CheckBox fx:id="propertyShowInUNderlyingList" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                                    <CheckBox fx:id="propertyShowInOptionList" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                                    <TextField fx:id="propertyOptionListWidth" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                                    <TextField fx:id="propertyUnderlyingListWidth" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                                 </children>
+                                 <padding>
+                                    <Insets left="7.0" right="7.0" />
+                                 </padding>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </items>
+            </SplitPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

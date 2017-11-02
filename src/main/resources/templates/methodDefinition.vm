@@ -1,0 +1,74 @@
+Definition $methodName "$methodLabel" "$parentLabel"  "$optionLabel" {
+
+    Data {
+#foreach( $komponente in $komponenten)
+#set ($p = $komponente.Properties)
+        ${p.Datatype.IpricerField}      ${p.InternalFieldName}      "${p.LabelText}"    ${p.RoleAccess}     ${p.RecordType}:${p.ExternalName}       ${p.MaxLength}      #if ($p.ProcedureNameForValues)-valproc  ${p.ProcedureNameForValues} -strict#end
+
+#end
+
+    }
+
+    Init {
+#foreach( $komponente in $komponenten)
+#set ($p = $komponente.Properties)
+#if ($p.InitValue)
+        InitField   ${p.InternalFieldName}      "$p.InitValue"
+#end
+#end
+
+    }
+
+    TypeMask {
+#foreach( $komponente in $komponenten)
+#set ($p = $komponente.Properties)
+#if ($p.RecordType == "B" || $p.RecordType == "E")
+        AddColumn ${p.InternalFieldName}                       -row ${p.GridY} -col ${p.GridX} -width ${p.Width}
+#end
+#end
+
+    }
+
+    UnderlyingList {
+#foreach( $komponente in $komponenten)
+#set ($p = $komponente.Properties)
+#if ($p.ShowInUnderlyingList)
+        AddColumn ${p.InternalFieldName}               -width ${p.UnderlyingListWidth}
+#end
+#end
+
+    }
+
+    UnderlyingMask {
+#foreach( $komponente in $komponenten)
+#set ($p = $komponente.Properties)
+#if ($p.RecordType == "U" || $p.RecordType == "G" || $p.RecordType == "R")
+        AddColumn   ${p.InternalFieldName}                       -row ${p.GridY} -col ${p.GridX} -width ${p.Width}
+#end
+#end
+
+    }
+
+    OptionList {
+#foreach( $komponente in $komponenten)
+#set ($p = $komponente.Properties)
+#if ($p.ShowInOptionList)
+        AddColumn ${p.InternalFieldName}               -width ${p.OptionListWidth}
+#end
+#end
+
+    }
+
+    OptionListLabel {
+    }
+
+    OptionMask {
+#foreach( $komponente in $komponenten)
+#set ($p = $komponente.Properties)
+#if ($p.RecordType == "D" || $p.RecordType == "P" || $p.RecordType == "S")
+        AddColumn ${p.InternalFieldName}                       -row ${p.GridY} -col ${p.GridX} -width ${p.Width}
+#end
+#end
+
+    }
+}
