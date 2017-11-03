@@ -1,6 +1,7 @@
 package ch.raiffeisen.ipricer.fxdesigner;
 
 import ch.raiffeisen.ipricer.designer.domain.RecordType;
+import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
 import ch.raiffeisen.ipricer.fxdesigner.domain.RoleAccess;
 import javafx.application.Application;
@@ -187,5 +188,8 @@ public class FXDesigner extends Application implements Initializable {
         propertyRoleAccess.setItems(FXCollections.observableArrayList(RoleAccess.values()));
 
         propertyDatatype.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println("Neuer Wert: "+newValue+"; alterWert="+oldValue));
+
+        methodGrid.add(new DesignComponent(), 2,3);
+
     }
 }
