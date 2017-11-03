@@ -5,6 +5,8 @@ import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
 import ch.raiffeisen.ipricer.fxdesigner.domain.RoleAccess;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -183,5 +185,7 @@ public class FXDesigner extends Application implements Initializable {
         propertyDatatype.setItems(FXCollections.observableArrayList(Datatype.values()));
         propertyRecordType.setItems(FXCollections.observableArrayList(RecordType.values()));
         propertyRoleAccess.setItems(FXCollections.observableArrayList(RoleAccess.values()));
+
+        propertyDatatype.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println("Neuer Wert: "+newValue+"; alterWert="+oldValue));
     }
 }
