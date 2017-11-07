@@ -1,7 +1,7 @@
 package ch.raiffeisen.ipricer.fxdesigner.component;
 
 import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
-import ch.raiffeisen.ipricer.fxdesigner.domain.ProcedureNames;
+import ch.raiffeisen.ipricer.fxdesigner.domain.ProcedureName;
 import ch.raiffeisen.ipricer.fxdesigner.domain.RoleAccess;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -10,35 +10,42 @@ import javafx.scene.control.ChoiceBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class YesNo extends DesignComponent implements Initializable{
+public abstract class DesignComponentChoices extends DesignComponent implements Initializable{
 
     @FXML
     private ChoiceBox choices;
+    protected ProcedureName procedureName;
 
     @Override
     protected void initProperties() {
         super.initProperties();
         properties.isSeparator = false;
-        properties.labelText = "Ja/Nein";
+        properties.labelText = "Choice";
         properties.dataType = Datatype.String;
         properties.strict = true;
-        properties.procedureNameForValues = ProcedureNames.GetYesNo.name();
+        setProcedureName();
+        setChoices();
     }
+
+    protected abstract void setProcedureName();
 
     @Override
     protected String getTemplateName() {
-        return "/designer/YesNo.fxml";
+        return "/designer/Choices.fxml";
     }
 
-    @Override
-    protected DesignComponent create() {
-        return new YesNo();
-    }
-
+    
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        choices.getItems().addAll(ProcedureNames.GetYesNo.getValues());
-        choices.getSelectionModel().select(0);
+        setChoices();
+    }
+
+    protected void setChoices(){
+        if (procedureName !=null) {
+            choices.getItems().clear();
+            choices.getItems().addAll(procedureName.getValues());
+            choices.getSelectionModel().select(0);
+        }
     }
 
 
@@ -57,4 +64,10 @@ public class YesNo extends DesignComponent implements Initializable{
         this.properties.width= widthProperty;
     }
 
+    @Override
+    protected DesignComponent copy() {
+        DesignComponentChoices copy = (DesignComponentChoices)super.copy();
+        copy.procedureName = procedureName;
+        return copy;
+    }
 }

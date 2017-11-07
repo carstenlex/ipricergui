@@ -2,9 +2,8 @@ package ch.raiffeisen.ipricer.fxdesigner.domain;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public enum ProcedureNames {
+public enum ProcedureName {
     GetAllUsersAndGroups(RoleAccess.getNames()),
     GetJa(Arrays.asList("","Ja")),
     GetRundungsregeln(Rundungsregel.getNames()),
@@ -12,7 +11,7 @@ public enum ProcedureNames {
 
     List<String> values;
 
-    private ProcedureNames(List<String> values){
+    private ProcedureName(List<String> values){
         this.values = values;
     }
 

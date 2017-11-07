@@ -2,7 +2,7 @@ package ch.raiffeisen.ipricer.fxdesigner.component;
 
 import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
 
-public class DirectString extends DesignComponent {
+public class DesignComponentDirectString extends DesignComponent {
 
     @Override
     protected void initProperties() {
@@ -13,6 +13,6 @@ public class DirectString extends DesignComponent {
 
     @Override
     protected DesignComponent create() {
-        return new DirectString();
+        return new DesignComponentDirectString();
     }
 }

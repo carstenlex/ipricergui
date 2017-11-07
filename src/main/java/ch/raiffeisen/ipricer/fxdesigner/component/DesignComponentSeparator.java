@@ -2,7 +2,7 @@ package ch.raiffeisen.ipricer.fxdesigner.component;
 
 import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
 
-public class Separator extends DesignComponent {
+public class DesignComponentSeparator extends DesignComponent {
 
 
     @Override
@@ -20,6 +20,6 @@ public class Separator extends DesignComponent {
 
     @Override
     protected DesignComponent create() {
-        return new Separator();
+        return new DesignComponentSeparator();
     }
 }

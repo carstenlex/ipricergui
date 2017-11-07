@@ -58,7 +58,23 @@
                                     <Font size="28.0" />
                                  </font>
                               </Label>
-                               <RadioButton mnemonicParsing="false" text="Ja/Nein Box" fx:id="selectComponentYesNo" userData="ch.raiffeisen.ipricer.fxdesigner.component.YesNo">
+                               <RadioButton mnemonicParsing="false" text="Ja/Nein Box" fx:id="selectComponentYesNo" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentYesNo">
+                                   <font>
+                                       <Font size="19.0" />
+                                   </font>
+                               </RadioButton>
+                               <RadioButton mnemonicParsing="false" text="Rundungsregeln" fx:id="selectComponentRundungsregel" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentRundungsregel">
+                                   <font>
+                                       <Font size="19.0" />
+                                   </font>
+                               </RadioButton>
+
+                               <RadioButton mnemonicParsing="false" text="AccessControl" fx:id="selectComponentAllUsersAndGroups" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentAllUsersAndGroups">
+                                   <font>
+                                       <Font size="19.0" />
+                                   </font>
+                               </RadioButton>
+                               <RadioButton mnemonicParsing="false" text="Ja Box" fx:id="selectComponentJa" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentJa">
                                    <font>
                                        <Font size="19.0" />
                                    </font>
@@ -68,7 +84,7 @@
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Direct String" fx:id="selectComponentDirectString" userData="ch.raiffeisen.ipricer.fxdesigner.component.DirectString">
+                              <RadioButton mnemonicParsing="false" text="Direct String" fx:id="selectComponentDirectString" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectString">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
@@ -78,7 +94,7 @@
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Separator" fx:id="selectComponentSeparator" userData="ch.raiffeisen.ipricer.fxdesigner.component.Separator">
+                              <RadioButton mnemonicParsing="false" text="Separator" fx:id="selectComponentSeparator" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentSeparator">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
