@@ -1,9 +1,8 @@
 Init {
-#foreach( $komponente in $komponenten)
-#set ($p = $komponente.Properties)
-#if ($p.InitValue)
-InitField   ${p.InternalFieldName}      "$p.InitValue"
-#end
-#end
-
+<#list initComponents>
+<#items as komponente>
+<#assign p=komponente.designComponentProperties>
+InitField   ${p.internalFieldName}      "${p.initValue}"
+</#items>
+</#list>
 }

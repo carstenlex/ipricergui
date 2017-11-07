@@ -51,7 +51,8 @@ public class Generator {
 
 
 
-        try (Writer out = new OutputStreamWriter(System.out)) {
+        try  {
+            Writer out = new OutputStreamWriter(System.out); //TODO . try Resource wenn es nicht System.out ist
             Template template = cfg.getTemplate("methodDefinition.ftlh");
             template.process(placeholders,out);
         } catch (TemplateException e) {
@@ -65,6 +66,13 @@ public class Generator {
     private void fillPlaceholders(Map<String, Object> placeholders, FXDesigner fxDesigner) {
         placeholders.put("mp",MethodProperties.from(fxDesigner));
         placeholders.put("dataComponents",getDataComponents(fxDesigner));
+        placeholders.put("initComponents",getInitComponents(fxDesigner));
+        placeholders.put("allComponents",fxDesigner.getAllDesignComponents());
+    }
+
+    private List<DesignComponent> getInitComponents(FXDesigner fxDesigner) {
+        List<DesignComponent> collect = fxDesigner.getAllDesignComponents().stream().filter(c -> !c.properties.isSeparator && StringUtils.isNotBlank(c.properties.initValue)).collect(Collectors.toList());
+        return collect;
     }
 
     private List<DesignComponent> getDataComponents(FXDesigner fxDesigner) {
@@ -95,6 +103,16 @@ public class Generator {
         if (allDesignComponents == null || allDesignComponents.size() ==0){
             errorReport.addError("komponenten","Keine DesignComponents definiert");
         }
+        validateInternalFieldnames(allDesignComponents);
+        validateExternalFieldnames(allDesignComponents);
+    }
+
+    private void validateExternalFieldnames(List<DesignComponent> allDesignComponents) {
+        //TODO  alle externalFieldNames müssen gesetzt sein
+    }
+
+    private void validateInternalFieldnames(List<DesignComponent> allDesignComponents) {
+        //TODO alle internalFieldnames müssen gesetzt sein und sie müssen eindeutig sein
     }
 
     private void validateMethodDefinition(ErrorReport errorReport, MethodProperties methodProperties) {

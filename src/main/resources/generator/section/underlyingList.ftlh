@@ -1,9 +1,10 @@
 UnderlyingList {
-#foreach( $komponente in $komponenten)
-#set ($p = $komponente.Properties)
-#if ($p.ShowInUnderlyingList)
-AddColumn ${p.InternalFieldName}               -width ${p.UnderlyingListWidth}
-#end
-#end
-
+<#list allComponents>
+    <#items as komponente>
+        <#assign p=komponente.designComponentProperties>
+        <#if p.showInUnderlyingList>
+        AddColumn ${p.internalFieldName}               -width ${p.underlyingListWidth}
+        </#if>
+    </#items>
+</#list>
 }

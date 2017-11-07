@@ -1,9 +1,10 @@
 UnderlyingMask {
-#foreach( $komponente in $komponenten)
-#set ($p = $komponente.Properties)
-#if ($p.RecordType == "U" || $p.RecordType == "G" || $p.RecordType == "R")
-AddColumn   ${p.InternalFieldName}                       -row ${p.GridY} -col ${p.GridX} -width ${p.Width}
-#end
-#end
-
+<#list allComponents>
+    <#items as komponente>
+        <#assign p=komponente.designComponentProperties>
+        <#if p.recordType == "U" || p.recordType == "G" || p.recordType == "R">
+        AddColumn   ${p.internalFieldName}                       -row ${p.gridY} -col ${p.gridX} -width ${p.width}
+        </#if>
+    </#items>
+</#list>
 }

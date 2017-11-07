@@ -74,7 +74,7 @@ public class IPricerProperties {
     }
 
     public String getProcedureNameForValues() {
-        return procedureNameForValues;
+        return procedureNameForValues == null ? "" : procedureNameForValues;
     }
 
     public boolean isStrict() {
@@ -82,7 +82,7 @@ public class IPricerProperties {
     }
 
     public String getInitValue() {
-        return initValue;
+        return initValue == null ? "":initValue;
     }
 
     public boolean isSeparator() {
