@@ -8,6 +8,7 @@ import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import org.apache.commons.lang.StringUtils;
 
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
@@ -52,10 +53,11 @@ public class Generator {
 
 
 
-        try  {
-            Writer out = new OutputStreamWriter(System.out); //TODO . try Resource wenn es nicht System.out ist
+        try  (FileWriter fw = new FileWriter(fxDesigner.definitionFileSave)){
+            Writer sysout = new OutputStreamWriter(System.out); //TODO . try Resource wenn es nicht System.out ist
             Template template = cfg.getTemplate("methodDefinition.ftlh");
-            template.process(placeholders,out);
+            template.process(placeholders,sysout);
+            template.process(placeholders,fw);
         } catch (TemplateException e) {
             e.printStackTrace();
         } catch (IOException e) {

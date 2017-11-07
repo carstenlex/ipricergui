@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 
 
 import java.awt.Point;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -197,6 +198,7 @@ public class FXDesigner extends Application implements Initializable {
     public DesignComponent selectedDesignComponent;
 
     FileChooser fileChooser = new FileChooser();
+    public File definitionFileSave;
 
 
     public HashMap<Page, GridPane> gridFromPage = new HashMap<>();
@@ -232,12 +234,22 @@ public class FXDesigner extends Application implements Initializable {
     }
 
     public void saveDefinitionFile(ActionEvent actionEvent) {
+        try {
+            if (definitionFileSave == null) {
+                definitionFileSave = fileChooser.showSaveDialog(window);
+            }
+
+            generator.generateDefinitionFile(this);
+        } catch (GeneratorException e) {
+            System.out.println(e.getErrorReport().toString());
+        }
     }
 
     public void generateDefinitionFile(ActionEvent actionEvent) {
 
         try {
-            fileChooser.showSaveDialog(window);
+            definitionFileSave = fileChooser.showSaveDialog(window);
+
             generator.generateDefinitionFile(this);
         } catch (GeneratorException e) {
             System.out.println(e.getErrorReport().toString());

@@ -52,6 +52,7 @@
                         <Label text="Child Label" />
                         <TextField fx:id="childLabel" />
                          <Button fx:id="generateDefinition" text="Generate Def" onAction="#generateDefinitionFile"/>
+                         <Button fx:id="saveDefinition" text="Save Def" onAction="#saveDefinitionFile"/>
                         <VBox prefHeight="604.0" prefWidth="117.0" VBox.vgrow="ALWAYS">
                            <children>
                               <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="224.0" text="Komponenten" textAlignment="CENTER" VBox.vgrow="ALWAYS">
