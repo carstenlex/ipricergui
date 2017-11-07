@@ -221,15 +221,5 @@ public abstract class DesignComponent extends HBox {
         this.properties.recordType = page.getDefault();
     }
 
-    public void moveToMethod() {
-        setPage(Page.METHOD);
-    }
 
-    public void moveToParent() {
-        setPage(Page.PARENT);
-    }
-
-    public void moveToChild() {
-        setPage(Page.CHILD);
-    }
 }

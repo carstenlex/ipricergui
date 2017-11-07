@@ -425,24 +425,9 @@ public class FXDesigner extends Application implements Initializable {
         deleteComponent.setOnAction(e ->
                 gridFromPage.get(currentPage).getChildren().remove(contextComponent)
         );
-        moveToMethod.setOnAction(e -> {
-            gridFromPage.get(currentPage).getChildren().remove(contextComponent);
-
-            contextComponent.moveToMethod();
-            gridFromPage.get(Page.METHOD).add(contextComponent,contextComponent.properties.gridX,contextComponent.properties.gridY);
-        });
-        moveToParent.setOnAction(e -> {
-            gridFromPage.get(currentPage).getChildren().remove(contextComponent);
-
-            contextComponent.moveToParent();
-            gridFromPage.get(Page.PARENT).add(contextComponent,contextComponent.properties.gridX,contextComponent.properties.gridY);
-        });
-        moveToChild.setOnAction(e -> {
-            gridFromPage.get(currentPage).getChildren().remove(contextComponent);
-
-            contextComponent.moveToChild();
-            gridFromPage.get(Page.CHILD).add(contextComponent,contextComponent.properties.gridX,contextComponent.properties.gridY);
-        });
+        moveToMethod.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.METHOD));
+        moveToParent.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.PARENT));
+        moveToChild.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.CHILD));
 
         if (METHOD == currentPage) {
             cm.getItems().addAll(moveToParent, moveToChild, separator, deleteComponent);
@@ -455,6 +440,16 @@ public class FXDesigner extends Application implements Initializable {
         }
 
         return cm;
+    }
+
+    private EventHandler<ActionEvent> contextMenuMoveToOtherPage(DesignComponent contextComponent, Page currentPage, Page newPage) {
+        return e -> {
+            gridFromPage.get(currentPage).getChildren().remove(contextComponent);
+
+            contextComponent.setPage(newPage);
+            showPropertiesForSelectedComponent();
+            gridFromPage.get(newPage).add(contextComponent,contextComponent.properties.gridX,contextComponent.properties.gridY);
+        };
     }
 
 }
