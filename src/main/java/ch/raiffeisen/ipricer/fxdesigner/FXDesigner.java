@@ -7,6 +7,7 @@ import ch.raiffeisen.ipricer.fxdesigner.generator.GeneratorException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -29,10 +30,12 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 
-import java.awt.*;
+import java.awt.Point;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import static ch.raiffeisen.ipricer.fxdesigner.domain.Page.METHOD;
@@ -199,6 +202,7 @@ public class FXDesigner extends Application implements Initializable {
     public HashMap<Page, GridPane> gridFromPage = new HashMap<>();
 
     Generator generator = new Generator();
+    private Object allDesignComponents;
 
     public static void main(String[] args) {
         launch(args);
@@ -305,6 +309,17 @@ public class FXDesigner extends Application implements Initializable {
 
             }
         });
+
+        initTestData();
+
+    }
+
+    private void initTestData() {
+        methodLabel.setText("APLabel");
+        methodName.setText("APname");
+        parentLabel.setText("APparent");
+        childLabel.setText("APchild");
+
     }
 
 
@@ -462,4 +477,23 @@ public class FXDesigner extends Application implements Initializable {
         };
     }
 
+    public java.util.List<DesignComponent> getAllDesignComponents() {
+
+        List<DesignComponent> designComponents = new ArrayList<>();
+        designComponents.addAll(getDesignComponents(methodGrid));
+        designComponents.addAll(getDesignComponents(parentGrid));
+        designComponents.addAll(getDesignComponents(childGrid));
+        return designComponents;
+    }
+
+    private List<DesignComponent> getDesignComponents(GridPane grid) {
+        ObservableList<Node> children = grid.getChildren();
+        List<DesignComponent> designComponents = new ArrayList<>();
+        for(Node node: children) {
+            if (node instanceof DesignComponent){
+                designComponents.add((DesignComponent)node);
+            }
+        }
+        return designComponents;
+    }
 }

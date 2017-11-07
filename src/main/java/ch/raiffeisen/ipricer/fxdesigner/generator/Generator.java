@@ -1,6 +1,7 @@
 package ch.raiffeisen.ipricer.fxdesigner.generator;
 
 import ch.raiffeisen.ipricer.fxdesigner.FXDesigner;
+import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
@@ -11,8 +12,8 @@ import org.apache.commons.lang.StringUtils;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Generator {
 
@@ -62,28 +63,51 @@ public class Generator {
     }
 
     private void fillPlaceholders(Map<String, Object> placeholders, FXDesigner fxDesigner) {
-        placeholders.put("name", "Carsten");
+        placeholders.put("mp",MethodProperties.from(fxDesigner));
+        placeholders.put("dataComponents",getDataComponents(fxDesigner));
+    }
+
+    private List<DesignComponent> getDataComponents(FXDesigner fxDesigner) {
+        List<DesignComponent> alleOhneSeparators = fxDesigner.getAllDesignComponents().stream().filter(c -> !c.properties.isSeparator).collect(Collectors.toList());
+        Optional<DesignComponent> separator = fxDesigner.getAllDesignComponents().stream().filter(c -> c.properties.isSeparator).findFirst();
+
+        if (separator.isPresent()){
+            List<DesignComponent> dataComponents = new ArrayList<>();
+            dataComponents.addAll(alleOhneSeparators);
+            dataComponents.add(separator.get());
+            return dataComponents;
+        }else{
+            return alleOhneSeparators;
+        }
+
     }
 
     private void validateData(FXDesigner fxDesigner) throws GeneratorException{
         ErrorReport errorReport = new ErrorReport();
-        validateMethodDefinition(errorReport,fxDesigner.methodName.getText(), fxDesigner.methodLabel.getText(), fxDesigner.parentLabel.getText(), fxDesigner.childLabel.getText());
+        validateMethodDefinition(errorReport,MethodProperties.from(fxDesigner));
+        validateKomponenten(errorReport,fxDesigner.getAllDesignComponents());
         if (errorReport.hasErrors()) {
             throw new GeneratorException(errorReport);
         }
     }
 
-    private void validateMethodDefinition(ErrorReport errorReport, String methodName, String methodLabel, String parentLabel, String childLabel) {
-        if (StringUtils.isEmpty(methodName)){
+    private void validateKomponenten(ErrorReport errorReport, List<DesignComponent> allDesignComponents) {
+        if (allDesignComponents == null || allDesignComponents.size() ==0){
+            errorReport.addError("komponenten","Keine DesignComponents definiert");
+        }
+    }
+
+    private void validateMethodDefinition(ErrorReport errorReport, MethodProperties methodProperties) {
+        if (StringUtils.isEmpty(methodProperties.methodName)){
             errorReport.addError("methodName", KEIN_WERT);
         }
-        if (StringUtils.isEmpty(methodLabel)){
+        if (StringUtils.isEmpty(methodProperties.methodLabel)){
             errorReport.addError("methodLabel",KEIN_WERT);
         }
-        if (StringUtils.isEmpty(parentLabel)){
+        if (StringUtils.isEmpty(methodProperties.parentLabel)){
             errorReport.addError("parentLabel",KEIN_WERT);
         }
-        if (StringUtils.isEmpty(childLabel)){
+        if (StringUtils.isEmpty(methodProperties.childLabel)){
             errorReport.addError("childLabel",KEIN_WERT);
         }
 

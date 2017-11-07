@@ -42,6 +42,7 @@ public class IPricerProperties {
     public Datatype getDatatype() {
         return dataType;
     }
+    public String getFieldDefinition(){return dataType.getIpricerField();}
 
 
     public String getInternalFieldName() {

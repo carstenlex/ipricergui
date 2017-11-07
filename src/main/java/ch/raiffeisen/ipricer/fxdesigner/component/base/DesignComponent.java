@@ -49,6 +49,11 @@ public abstract class DesignComponent extends HBox {
         }
     }
 
+
+    public IPricerProperties getDesignComponentProperties() {
+        return properties;
+    }
+
     protected void initProperties() {
         properties.roleAccess = RoleAccess.radmin;
         properties.labelText = "Label";

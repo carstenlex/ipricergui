@@ -1,8 +1,8 @@
 Data {
-#foreach( $komponente in $komponenten)
-#set ($p = $komponente.Properties)
-${p.Datatype.IpricerField}      ${p.InternalFieldName}      "${p.LabelText}"    ${p.RoleAccess}     ${p.RecordType}:${p.ExternalName}       ${p.MaxLength}      #if ($p.ProcedureNameForValues)-valproc  ${p.ProcedureNameForValues} -strict#end
-
-#end
-
+<#list dataComponents>
+<#items as komponente>
+<#assign p=komponente.designComponentProperties>
+${p.fieldDefinition}      ${p.internalFieldName}      "${p.labelText}"    ${p.roleAccess}     ${p.recordType}:${p.externalName}       ${p.maxLength} <#if p.procedureNameForValues != "">-valproc  ${p.procedureNameForValues} -strict</#if>
+</#items>
+</#list>
 }

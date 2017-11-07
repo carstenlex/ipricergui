@@ -13,4 +13,6 @@ public enum Datatype {
     public java.lang.String getIpricerField() {
         return ipricerField;
     }
+
+
 }
