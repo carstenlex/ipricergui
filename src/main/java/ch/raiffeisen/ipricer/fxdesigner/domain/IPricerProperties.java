@@ -23,6 +23,8 @@ public class IPricerProperties {
     public int gridX;
     public int gridY;
 
+    public boolean indirectComponent;
+
 
 
     /*

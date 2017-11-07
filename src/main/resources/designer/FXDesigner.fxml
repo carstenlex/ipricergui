@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.raiffeisen.ipricer.fxdesigner.FXDesigner">
+<AnchorPane prefHeight="800.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.raiffeisen.ipricer.fxdesigner.FXDesigner">
    <children>
       <VBox prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -79,7 +79,7 @@
                                        <Font size="19.0" />
                                    </font>
                                </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Direct Zahl" fx:id="selectComponentDirectZahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
+                              <RadioButton mnemonicParsing="false" text="Direct Zahl" fx:id="selectComponentDirectZahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectZahl">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
@@ -89,7 +89,7 @@
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Direct Date" fx:id="selectComponentDirectDate" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
+                              <RadioButton mnemonicParsing="false" text="Direct Date" fx:id="selectComponentDirectDate" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectDate">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
@@ -99,17 +99,17 @@
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Indirect Zahl" fx:id="selectComponentIndirectZahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
+                              <RadioButton mnemonicParsing="false" text="Indirect Zahl" fx:id="selectComponentIndirectZahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectZahl">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Indirect String" fx:id="selectComponentIndirectString" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
+                              <RadioButton mnemonicParsing="false" text="Indirect String" fx:id="selectComponentIndirectString" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectString">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Indirect Date" fx:id="selectComponentIndirectDate" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
+                              <RadioButton mnemonicParsing="false" text="Indirect Date" fx:id="selectComponentIndirectDate" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectDate">
                                  <font>
                                     <Font size="19.0" />
                                  </font>

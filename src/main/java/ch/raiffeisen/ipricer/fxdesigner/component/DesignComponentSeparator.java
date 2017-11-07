@@ -1,5 +1,6 @@
 package ch.raiffeisen.ipricer.fxdesigner.component;
 
+import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
 
 public class DesignComponentSeparator extends DesignComponent {

@@ -1,4 +1,4 @@
-package ch.raiffeisen.ipricer.fxdesigner.component;
+package ch.raiffeisen.ipricer.fxdesigner.component.base;
 
 import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
 import ch.raiffeisen.ipricer.fxdesigner.domain.ProcedureName;

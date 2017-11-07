@@ -1,6 +1,6 @@
 package ch.raiffeisen.ipricer.fxdesigner;
 
-import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent;
+import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
 import javafx.application.Application;
 import javafx.application.Platform;

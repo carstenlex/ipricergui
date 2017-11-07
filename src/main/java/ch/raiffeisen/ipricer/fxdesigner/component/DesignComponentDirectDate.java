@@ -3,17 +3,17 @@ package ch.raiffeisen.ipricer.fxdesigner.component;
 import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
 
-public class DesignComponentDirectString extends DesignComponent {
+public class DesignComponentDirectDate extends DesignComponent {
 
     @Override
     protected void initProperties() {
         super.initProperties();
-        properties.dataType = Datatype.String;
-        properties.labelText = "Direct String";
+        properties.dataType = Datatype.Date;
+        properties.labelText = "Direct Date";
     }
 
     @Override
     protected DesignComponent create() {
-        return new DesignComponentDirectString();
+        return new DesignComponentDirectDate();
     }
 }

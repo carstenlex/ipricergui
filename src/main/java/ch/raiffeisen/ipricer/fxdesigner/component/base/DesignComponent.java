@@ -1,4 +1,4 @@
-package ch.raiffeisen.ipricer.fxdesigner.component;
+package ch.raiffeisen.ipricer.fxdesigner.component.base;
 
 import ch.raiffeisen.ipricer.fxdesigner.FXDesigner;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
@@ -64,6 +64,7 @@ public abstract class DesignComponent extends HBox {
         properties.dataType = Datatype.String;
         properties.gridX =0;
         properties.gridY =0;
+        properties.indirectComponent = false;
     }
 
 

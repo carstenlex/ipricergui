@@ -1,5 +1,7 @@
 package ch.raiffeisen.ipricer.fxdesigner.component;
 
+import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
+import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponentChoices;
 import ch.raiffeisen.ipricer.fxdesigner.domain.ProcedureName;
 
 public class DesignComponentAllUsersAndGroups extends DesignComponentChoices {
