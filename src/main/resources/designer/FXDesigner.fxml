@@ -39,7 +39,7 @@
                 </Menu>
               </menus>
             </MenuBar>
-            <SplitPane dividerPositions="0.1" prefHeight="800.0" prefWidth="1200.0" VBox.vgrow="ALWAYS">
+            <SplitPane dividerPositions="0.2" prefHeight="800.0" prefWidth="1200.0" VBox.vgrow="ALWAYS">
                <items>
                   <VBox prefHeight="200.0" prefWidth="100.0">
                      <children>
@@ -58,37 +58,38 @@
                                     <Font size="28.0" />
                                  </font>
                               </Label>
-                              <RadioButton mnemonicParsing="false" text="Direct Zahl">
+
+                              <RadioButton mnemonicParsing="false" text="Direct Zahl" fx:id="selectComponentDirectZahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Direct String">
+                              <RadioButton mnemonicParsing="false" text="Direct String" fx:id="selectComponentDirectString" userData="ch.raiffeisen.ipricer.fxdesigner.component.DirectString">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Direct Date">
+                              <RadioButton mnemonicParsing="false" text="Direct Date" fx:id="selectComponentDirectDate" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Separator">
+                              <RadioButton mnemonicParsing="false" text="Separator" fx:id="selectComponentSeparator" userData="ch.raiffeisen.ipricer.fxdesigner.component.Separator">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Indirect Zahl">
+                              <RadioButton mnemonicParsing="false" text="Indirect Zahl" fx:id="selectComponentIndirectZahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Indirect String">
+                              <RadioButton mnemonicParsing="false" text="Indirect String" fx:id="selectComponentIndirectString" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
                               </RadioButton>
-                              <RadioButton mnemonicParsing="false" text="Indirect Date">
+                              <RadioButton mnemonicParsing="false" text="Indirect Date" fx:id="selectComponentIndirectDate" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
                                  <font>
                                     <Font size="19.0" />
                                  </font>
@@ -113,35 +114,7 @@
                                                    </children>
                                                 </HBox>
                                                 <GridPane fx:id="methodGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
-                                                  <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                  </columnConstraints>
-                                                  <rowConstraints>
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                  </rowConstraints>
+
                                                 </GridPane>
                                              </children>
                                           </AnchorPane>
@@ -157,35 +130,7 @@
                                                    </children>
                                                 </HBox>
                                                 <GridPane fx:id="parentGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
-                                                   <columnConstraints>
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                   </columnConstraints>
-                                                   <rowConstraints>
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                   </rowConstraints>
+
                                                 </GridPane>
                                              </children></AnchorPane>
                                     </content>
@@ -200,35 +145,7 @@
                                                    </children>
                                                 </HBox>
                                                 <GridPane fx:id="childGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
-                                                   <columnConstraints>
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                   </columnConstraints>
-                                                   <rowConstraints>
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                   </rowConstraints>
+
                                                 </GridPane>
                                              </children></AnchorPane>
                                       </content>
@@ -286,6 +203,7 @@
                                     <Label text="optionList Width" GridPane.rowIndex="16" />
                                     <Label text="grid X" GridPane.rowIndex="17" />
                                     <Label text="grid Y" GridPane.rowIndex="18" />
+
                                     <TextField fx:id="propertyInternalFieldname" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                     <TextField fx:id="propertyExternalName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                     <TextField fx:id="propertyLabeltext" GridPane.columnIndex="1" GridPane.rowIndex="4" />
@@ -293,17 +211,18 @@
                                     <TextField fx:id="propertyWidth" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                                     <TextField fx:id="propertyProcedureName" GridPane.columnIndex="1" GridPane.rowIndex="9" />
                                     <TextField fx:id="propertyInitValue" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-                                    <TextField fx:id="propertyGridX" GridPane.columnIndex="1" GridPane.rowIndex="17" />
-                                    <TextField fx:id="propertyGridY" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                                    <TextField fx:id="propertyGridX" GridPane.columnIndex="1" GridPane.rowIndex="17" disable="true"/>
+                                    <TextField fx:id="propertyGridY" GridPane.columnIndex="1" GridPane.rowIndex="18" disable="true"/>
                                     <CheckBox fx:id="propertyStrict" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
                                     <ChoiceBox fx:id="propertyDatatype" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <ChoiceBox fx:id="propertyRoleAccess" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                     <ChoiceBox fx:id="propertyRecordType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                     <CheckBox fx:id="propertySeparator" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="12" />
-                                    <CheckBox fx:id="propertyShowInUNderlyingList" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                                    <CheckBox fx:id="propertyShowInUnderlyingList" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
                                     <CheckBox fx:id="propertyShowInOptionList" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
                                     <TextField fx:id="propertyOptionListWidth" GridPane.columnIndex="1" GridPane.rowIndex="16" />
                                     <TextField fx:id="propertyUnderlyingListWidth" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                                     <Button fx:id="propertiesUebernehmen" GridPane.columnIndex="1" GridPane.rowIndex="19"   />
                                  </children>
                                  <padding>
                                     <Insets left="7.0" right="7.0" />

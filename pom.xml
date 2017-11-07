@@ -29,11 +29,14 @@
     </build>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.controlsfx/controlsfx -->
         <dependency>
-            <groupId>ch.raiffeisen.priceengine.method</groupId>
-            <artifactId>common</artifactId>
-            <version>01.01.00</version>
+            <groupId>org.controlsfx</groupId>
+            <artifactId>controlsfx</artifactId>
+            <version>8.40.14</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>

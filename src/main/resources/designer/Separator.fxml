@@ -4,6 +4,6 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <fx:root type="HBox" xmlns:fx="http://javafx.com/fxml" onMousePressed="#mousePressed" onMouseDragged="#mouseDragged"  onMouseReleased="#mouseReleased" fillHeight="true" >
-    <Label fx:id="labelText" text="Label"/>
-    <TextField fx:id="textField" maxWidth="50" disable="true"/>
+    <Label fx:id="labelText" text="----------------"/>
+    <TextField fx:id="textField" maxWidth="50" disable="true" visible="false"/>
 </fx:root>
