@@ -3,7 +3,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<fx:root type="HBox" xmlns:fx="http://javafx.com/fxml" onMousePressed="#mousePressed" onMouseDragged="#mouseDragged"  onMouseReleased="#mouseReleased" fillHeight="true" >
+<fx:root type="HBox" xmlns:fx="http://javafx.com/fxml" onMousePressed="#mousePressed" onMouseDragged="#mouseDragged"  onMouseReleased="#mouseReleased"  onContextMenuRequested="#contextMenuRequested" fillHeight="true" >
     <Label fx:id="labelText" text="Label"/>
     <TextField fx:id="textField" maxWidth="50" disable="true"/>
 </fx:root>

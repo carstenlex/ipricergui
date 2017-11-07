@@ -30,7 +30,10 @@ import javafx.stage.Stage;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+
+import static ch.raiffeisen.ipricer.fxdesigner.domain.Page.METHOD;
 
 public class FXDesigner extends Application implements Initializable {
 
@@ -159,7 +162,6 @@ public class FXDesigner extends Application implements Initializable {
     private GridPane parentGrid;
 
 
-
     /*
     Komponentenauswahl
      */
@@ -182,13 +184,16 @@ public class FXDesigner extends Application implements Initializable {
     private RadioButton selectComponentYesNo;
     @FXML
     public RadioButton selectComponentRundungsregel;
-@FXML
+    @FXML
     public RadioButton selectComponentAllUsersAndGroups;
-@FXML
+    @FXML
     public RadioButton selectComponentJa;
 
 
     public DesignComponent selectedDesignComponent;
+
+
+    public HashMap<Page, GridPane> gridFromPage = new HashMap<>();
 
 
     public static void main(String[] args) {
@@ -252,12 +257,15 @@ public class FXDesigner extends Application implements Initializable {
         selectComponentJa.setToggleGroup(selectOneComponent);
 
         addMouseHandler(methodGrid, selectOneComponent);
-        methodGrid.setUserData(Page.METHOD);
+        methodGrid.setUserData(METHOD);
         addMouseHandler(parentGrid, selectOneComponent);
         parentGrid.setUserData(Page.PARENT);
         addMouseHandler(childGrid, selectOneComponent);
         childGrid.setUserData(Page.CHILD);
 
+        gridFromPage.put(Page.METHOD, methodGrid);
+        gridFromPage.put(Page.PARENT, parentGrid);
+        gridFromPage.put(Page.CHILD, childGrid);
 
         Image ok = new Image(getClass().getResourceAsStream("/img/ok.png"), 30, 30, true, true);
         propertiesUebernehmen.setGraphic(new ImageView(ok));
@@ -402,6 +410,51 @@ public class FXDesigner extends Application implements Initializable {
 
     public void showPropertiesForSelectedComponent() {
         showProperties(selectedDesignComponent.properties, selectedDesignComponent.getPage());
+    }
+
+    public ContextMenu createContextMenu(DesignComponent contextComponent) {
+        Page currentPage = contextComponent.getPage();
+
+        ContextMenu cm = new ContextMenu();
+        MenuItem moveToMethod = new MenuItem("verschiebe auf Method");
+        MenuItem moveToParent = new MenuItem("verschiebe auf Parent");
+        MenuItem moveToChild = new MenuItem("verschiebe auf Child");
+        SeparatorMenuItem separator = new SeparatorMenuItem();
+        MenuItem deleteComponent = new MenuItem("Delete");
+
+        deleteComponent.setOnAction(e ->
+                gridFromPage.get(currentPage).getChildren().remove(contextComponent)
+        );
+        moveToMethod.setOnAction(e -> {
+            gridFromPage.get(currentPage).getChildren().remove(contextComponent);
+
+            contextComponent.moveToMethod();
+            gridFromPage.get(Page.METHOD).add(contextComponent,contextComponent.properties.gridX,contextComponent.properties.gridY);
+        });
+        moveToParent.setOnAction(e -> {
+            gridFromPage.get(currentPage).getChildren().remove(contextComponent);
+
+            contextComponent.moveToParent();
+            gridFromPage.get(Page.PARENT).add(contextComponent,contextComponent.properties.gridX,contextComponent.properties.gridY);
+        });
+        moveToChild.setOnAction(e -> {
+            gridFromPage.get(currentPage).getChildren().remove(contextComponent);
+
+            contextComponent.moveToChild();
+            gridFromPage.get(Page.CHILD).add(contextComponent,contextComponent.properties.gridX,contextComponent.properties.gridY);
+        });
+
+        if (METHOD == currentPage) {
+            cm.getItems().addAll(moveToParent, moveToChild, separator, deleteComponent);
+        }
+        if (Page.PARENT == currentPage) {
+            cm.getItems().addAll(moveToMethod, moveToChild, separator, deleteComponent);
+        }
+        if (Page.CHILD == currentPage) {
+            cm.getItems().addAll(moveToMethod, moveToParent, separator, deleteComponent);
+        }
+
+        return cm;
     }
 
 }

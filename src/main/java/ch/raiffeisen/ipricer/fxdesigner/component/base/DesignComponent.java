@@ -2,11 +2,13 @@ package ch.raiffeisen.ipricer.fxdesigner.component.base;
 
 import ch.raiffeisen.ipricer.fxdesigner.FXDesigner;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -47,23 +49,23 @@ public abstract class DesignComponent extends HBox {
         }
     }
 
-    protected  void initProperties(){
+    protected void initProperties() {
         properties.roleAccess = RoleAccess.radmin;
         properties.labelText = "Label";
-        properties.showInOptionList=false;
-        properties.showInUnderlyingList=false;
-        properties.isSeparator=false;
-        properties.initValue="";
-        properties.strict=true;
-        properties.width=50;
+        properties.showInOptionList = false;
+        properties.showInUnderlyingList = false;
+        properties.isSeparator = false;
+        properties.initValue = "";
+        properties.strict = true;
+        properties.width = 50;
         properties.maxLength = 30;
         properties.procedureNameForValues = "";
-        properties.recordType= RecordType.D;
-        properties.externalName ="externalName";
-        properties.internalFieldName="internalName";
+        properties.recordType = RecordType.D;
+        properties.externalName = "externalName";
+        properties.internalFieldName = "internalName";
         properties.dataType = Datatype.String;
-        properties.gridX =0;
-        properties.gridY =0;
+        properties.gridX = 0;
+        properties.gridY = 0;
         properties.indirectComponent = false;
     }
 
@@ -81,7 +83,12 @@ public abstract class DesignComponent extends HBox {
         properties.labelText = text;
     }
 
+    //FXML
+    public void contextMenuRequested(ContextMenuEvent event) {
+        designer.createContextMenu(this).show(this, event.getScreenX(), event.getScreenY());
+    }
 
+    //FXML
     public void mousePressed(MouseEvent t) {
 //        System.out.println("maus pressed");
 
@@ -101,7 +108,7 @@ public abstract class DesignComponent extends HBox {
         this.setStyle("-fx-border-color: black; -fx-border-color: red; -fx-border-width: 3px");
     }
 
-
+    //FXML
     public void mouseDragged(MouseEvent t) {
         double offsetX = t.getSceneX() - orgSceneX;
         double offsetY = t.getSceneY() - orgSceneY;
@@ -113,15 +120,15 @@ public abstract class DesignComponent extends HBox {
         //System.out.println("Maus dragged");
     }
 
-
+    //FXML
     public void mouseReleased(MouseEvent t) {
         DesignComponent source = (DesignComponent) t.getSource();
         GridPane parent = (GridPane) source.getParent();
 
         Point movementFromCoords = getZelleMovementFromCoords(t, parent);
-        if (movementFromCoords.x==0 && movementFromCoords.y==0){
+        if (movementFromCoords.x == 0 && movementFromCoords.y == 0) {
             System.out.println("NO Movement");
-        }else {
+        } else {
             parent.getChildren().remove(source);
             Integer rowIndex = GridPane.getRowIndex(source);
             Integer columnIndex = GridPane.getColumnIndex(source);
@@ -194,15 +201,15 @@ public abstract class DesignComponent extends HBox {
         this.properties.roleAccess = roleAccess;
         if (RoleAccess.none == roleAccess) {
             this.textField.getStyleClass().add("guiReadOnly");
-        }else{
-this.textField.getStyleClass().remove("guiReadOnly");
+        } else {
+            this.textField.getStyleClass().remove("guiReadOnly");
         }
     }
 
     public void setWidthProperty(int widthProperty) {
         this.textField.setPrefWidth(widthProperty);
         this.textField.setMinWidth(widthProperty);
-        this.properties.width= widthProperty;
+        this.properties.width = widthProperty;
     }
 
     public Page getPage() {
@@ -212,5 +219,17 @@ this.textField.getStyleClass().remove("guiReadOnly");
     public void setPage(Page page) {
         this.page = page;
         this.properties.recordType = page.getDefault();
+    }
+
+    public void moveToMethod() {
+        setPage(Page.METHOD);
+    }
+
+    public void moveToParent() {
+        setPage(Page.PARENT);
+    }
+
+    public void moveToChild() {
+        setPage(Page.CHILD);
     }
 }
