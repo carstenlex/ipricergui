@@ -1,10 +1,7 @@
 package ch.raiffeisen.ipricer.fxdesigner;
 
 import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent;
-import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
-import ch.raiffeisen.ipricer.fxdesigner.domain.IPricerProperties;
-import ch.raiffeisen.ipricer.fxdesigner.domain.RecordType;
-import ch.raiffeisen.ipricer.fxdesigner.domain.RoleAccess;
+import ch.raiffeisen.ipricer.fxdesigner.domain.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -24,6 +21,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
@@ -146,19 +144,21 @@ public class FXDesigner extends Application implements Initializable {
     @FXML
     private GridPane methodGrid;
 
+    @FXML
+    private TabPane pageTabs;
 
     @FXML
     private Tab parentTab;
 
     @FXML
     private Tab childTab;
+    @FXML
+    private Tab methodTab;
 
     @FXML
     private GridPane parentGrid;
 
 
-    @FXML
-    private Tab methodTab;
 
     /*
     Komponentenauswahl
@@ -178,6 +178,8 @@ public class FXDesigner extends Application implements Initializable {
     private RadioButton selectComponentIndirectZahl;
     @FXML
     private RadioButton selectComponentSeparator;
+@FXML
+    private RadioButton selectComponentYesNo;
 
 
     public DesignComponent selectedDesignComponent;
@@ -192,6 +194,7 @@ public class FXDesigner extends Application implements Initializable {
         Parent root = FXMLLoader.load(this.getClass().getResource("/designer/FXDesigner.fxml"));
 
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("/css/guidesigner.css");
         primaryStage.setTitle("IPricer GUI Designer");
         primaryStage.setScene(scene);
         primaryStage.setFullScreen(false);
@@ -241,10 +244,14 @@ public class FXDesigner extends Application implements Initializable {
         selectComponentIndirectString.setToggleGroup(selectOneComponent);
         selectComponentIndirectZahl.setToggleGroup(selectOneComponent);
         selectComponentSeparator.setToggleGroup(selectOneComponent);
-
+    selectComponentYesNo.setToggleGroup(selectOneComponent);
         addMouseHandler(methodGrid, selectOneComponent);
+
+        methodGrid.setUserData(Page.METHOD);
         addMouseHandler(parentGrid, selectOneComponent);
+        parentGrid.setUserData(Page.PARENT);
         addMouseHandler(childGrid, selectOneComponent);
+        childGrid.setUserData(Page.CHILD);
 
 
         Image ok = new Image(getClass().getResourceAsStream("/img/ok.png"),30,30,true,true);
@@ -261,7 +268,7 @@ public class FXDesigner extends Application implements Initializable {
                 selectedDesignComponent.setRoleAccess(propertyRoleAccess.getValue());
                 p.recordType = propertyRecordType.getValue();
                 p.maxLength = Integer.parseInt(propertyMaxLength.getText());
-                p.width = Integer.parseInt(propertyWidth.getText());
+                selectedDesignComponent.setWidthProperty(Integer.parseInt(propertyWidth.getText()));
                 p.procedureNameForValues = propertyProcedureName.getText();
                 p.strict = propertyStrict.isSelected();
                 p.initValue = propertyInitValue.getText();
@@ -310,7 +317,11 @@ public class FXDesigner extends Application implements Initializable {
                     DesignComponent component = aClass.newInstance();
                     component.setDesigner(ref);
                     component.setGridPosition(zelle);
+                    component.setPage((Page)grid.getUserData());
                     grid.add(component,zelle.x, zelle.y);
+                    component.fireEvent( new MouseEvent(MouseEvent.MOUSE_PRESSED, event.getX(),
+                            event.getY(), 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
+                            true, true, true, true, true, true, null));
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
@@ -346,6 +357,7 @@ public class FXDesigner extends Application implements Initializable {
         }
 
 
+
     }
 
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
@@ -360,7 +372,9 @@ public class FXDesigner extends Application implements Initializable {
     }
 
 
-    public void showProperties(IPricerProperties properties) {
+    public void showProperties(IPricerProperties properties, Page page) {
+        propertyRecordType.getItems().clear();
+        propertyRecordType.getItems().addAll(page.getRecordTypes());
             propertyLabeltext.textProperty().set(properties.labelText);
             propertyDatatype.valueProperty().set(properties.dataType);
             propertyInternalFieldname.textProperty().set(properties.internalFieldName);
@@ -383,7 +397,7 @@ public class FXDesigner extends Application implements Initializable {
     }
 
     public void showPropertiesForSelectedComponent() {
-        showProperties(selectedDesignComponent.properties);
+        showProperties(selectedDesignComponent.properties,selectedDesignComponent.getPage());
     }
 
 }

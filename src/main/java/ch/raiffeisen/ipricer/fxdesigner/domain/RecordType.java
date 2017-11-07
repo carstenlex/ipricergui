@@ -1,5 +1,9 @@
 package ch.raiffeisen.ipricer.fxdesigner.domain;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public enum RecordType {
 
     B("Global Data Admin record"),
@@ -23,5 +27,9 @@ public enum RecordType {
 
     public String getDescription() {
         return description;
+    }
+
+    public static List<String> getNames(){
+        return Arrays.stream(values()).map(v -> v.name()).collect(Collectors.toList());
     }
 }

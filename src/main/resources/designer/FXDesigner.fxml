@@ -58,7 +58,11 @@
                                     <Font size="28.0" />
                                  </font>
                               </Label>
-
+                               <RadioButton mnemonicParsing="false" text="Ja/Nein Box" fx:id="selectComponentYesNo" userData="ch.raiffeisen.ipricer.fxdesigner.component.YesNo">
+                                   <font>
+                                       <Font size="19.0" />
+                                   </font>
+                               </RadioButton>
                               <RadioButton mnemonicParsing="false" text="Direct Zahl" fx:id="selectComponentDirectZahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponent">
                                  <font>
                                     <Font size="19.0" />
@@ -102,7 +106,7 @@
                     <items>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                            <children>
-                              <TabPane prefHeight="798.0" prefWidth="680.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <TabPane fx:id="pageTabs" prefHeight="798.0" prefWidth="680.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <tabs>
                                   <Tab fx:id="methodTab" text="Methode">
                                     <content>

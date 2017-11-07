@@ -1,17 +1,13 @@
 package ch.raiffeisen.ipricer.fxdesigner.component;
 
 import ch.raiffeisen.ipricer.fxdesigner.FXDesigner;
-import ch.raiffeisen.ipricer.fxdesigner.domain.Datatype;
-import ch.raiffeisen.ipricer.fxdesigner.domain.IPricerProperties;
-import ch.raiffeisen.ipricer.fxdesigner.domain.RecordType;
-import ch.raiffeisen.ipricer.fxdesigner.domain.RoleAccess;
+import ch.raiffeisen.ipricer.fxdesigner.domain.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
@@ -31,6 +27,7 @@ public abstract class DesignComponent extends HBox {
 
     public IPricerProperties properties = new IPricerProperties();
     private FXDesigner designer;
+    private Page page;
 
 
     public DesignComponent() {
@@ -43,6 +40,8 @@ public abstract class DesignComponent extends HBox {
 
             initProperties();
             setLabeltext(properties.labelText);
+            setRoleAccess(properties.roleAccess);
+            setWidthProperty(properties.width);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -56,7 +55,7 @@ public abstract class DesignComponent extends HBox {
         properties.isSeparator=false;
         properties.initValue="";
         properties.strict=true;
-        properties.width=120;
+        properties.width=50;
         properties.maxLength = 30;
         properties.procedureNameForValues = "";
         properties.recordType= RecordType.D;
@@ -164,12 +163,14 @@ public abstract class DesignComponent extends HBox {
         DesignComponent component = create();
         component.setLabeltext(this.labelText.getText());
         component.setRoleAccess(this.properties.roleAccess);
+        component.setWidthProperty(this.properties.width);
         component.orgTranslateX = this.orgTranslateX;
         component.orgTranslateY = this.orgTranslateY;
         component.orgSceneX = this.orgSceneX;
         component.orgSceneY = this.orgSceneY;
         component.properties = this.properties;
         component.designer = this.designer;
+        component.page = this.page;
         return component;
     }
 
@@ -191,13 +192,24 @@ public abstract class DesignComponent extends HBox {
     public void setRoleAccess(RoleAccess roleAccess) {
         this.properties.roleAccess = roleAccess;
         if (RoleAccess.none == roleAccess) {
-            this.textField.setDisable(true);
-            this.textField.setEditable(false);
-            this.textField.setStyle("-fx-background-color: black;");
+            this.textField.getStyleClass().add("guiReadOnly");
         }else{
-            this.textField.setDisable(false);
-            this.textField.setEditable(true);
-            this.textField.setStyle("-fx-background-color: white;");
+this.textField.getStyleClass().remove("guiReadOnly");
         }
+    }
+
+    public void setWidthProperty(int widthProperty) {
+        this.textField.setPrefWidth(widthProperty);
+        this.textField.setMinWidth(widthProperty);
+        this.properties.width= widthProperty;
+    }
+
+    public Page getPage() {
+        return page;
+    }
+
+    public void setPage(Page page) {
+        this.page = page;
+        this.properties.recordType = page.getDefault();
     }
 }

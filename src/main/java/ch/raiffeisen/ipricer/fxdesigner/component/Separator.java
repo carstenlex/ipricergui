@@ -7,6 +7,7 @@ public class Separator extends DesignComponent {
 
     @Override
     protected void initProperties() {
+        super.initProperties();
         properties.isSeparator = true;
         properties.labelText = "-------------";
         properties.dataType = Datatype.String;
