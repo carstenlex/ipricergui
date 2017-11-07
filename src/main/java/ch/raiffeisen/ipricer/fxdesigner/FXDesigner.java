@@ -33,10 +33,7 @@ import javafx.stage.Stage;
 import java.awt.Point;
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
 
 import static ch.raiffeisen.ipricer.fxdesigner.domain.Page.METHOD;
 
@@ -356,6 +353,8 @@ public class FXDesigner extends Application implements Initializable {
                     component.setDesigner(ref);
                     component.setGridPosition(zelle);
                     component.setPage((Page) grid.getUserData());
+                    component.properties.internalFieldName = UUID.randomUUID().toString();
+                    component.properties.externalName = UUID.randomUUID().toString();
                     grid.add(component, zelle.x, zelle.y);
                     component.fireEvent(new MouseEvent(MouseEvent.MOUSE_PRESSED, event.getX(),
                             event.getY(), 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,

@@ -6,18 +6,19 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import javafx.scene.control.TextField;
 import org.apache.commons.lang.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Generator {
 
     public static final String KEIN_WERT = "kein Wert";
+    public static final String KOMPONENTE = "komponente";
     Configuration cfg;
 
 
@@ -93,26 +94,39 @@ public class Generator {
     private void validateData(FXDesigner fxDesigner) throws GeneratorException{
         ErrorReport errorReport = new ErrorReport();
         validateMethodDefinition(errorReport,MethodProperties.from(fxDesigner));
-        validateKomponenten(errorReport,fxDesigner.getAllDesignComponents());
+        validateKomponenten(errorReport,fxDesigner.getAllDesignComponents(), fxDesigner);
         if (errorReport.hasErrors()) {
             throw new GeneratorException(errorReport);
         }
     }
 
-    private void validateKomponenten(ErrorReport errorReport, List<DesignComponent> allDesignComponents) {
+    private void validateKomponenten(ErrorReport errorReport, List<DesignComponent> allDesignComponents, FXDesigner fxDesigner) {
         if (allDesignComponents == null || allDesignComponents.size() ==0){
             errorReport.addError("komponenten","Keine DesignComponents definiert");
         }
-        validateInternalFieldnames(allDesignComponents);
-        validateExternalFieldnames(allDesignComponents);
+        validateInternalFieldnames(errorReport,getDataComponents(fxDesigner)); //in dieser Liste ist nur einmal ein Separator enthalten
+        validateExternalFieldnames(errorReport,allDesignComponents);
     }
 
-    private void validateExternalFieldnames(List<DesignComponent> allDesignComponents) {
-        //TODO  alle externalFieldNames müssen gesetzt sein
+    private void validateExternalFieldnames(ErrorReport errorReport, List<DesignComponent> allDesignComponents) {
+        allDesignComponents.stream().filter(c -> StringUtils.isBlank(c.properties.externalName)).forEach(c -> errorReport.addError(c.properties.internalFieldName,"ExternalName nicht gesetzt"));
     }
 
-    private void validateInternalFieldnames(List<DesignComponent> allDesignComponents) {
-        //TODO alle internalFieldnames müssen gesetzt sein und sie müssen eindeutig sein
+    private void validateInternalFieldnames(ErrorReport errorReport, List<DesignComponent> dataComponents) {
+        dataComponents.stream().filter(c -> StringUtils.isBlank(c.properties.internalFieldName)).forEach(c -> errorReport.addError(KOMPONENTE,"InternalFieldName nicht gesetzt:"+c.properties.toString()));
+
+        Map<String, Long> doppelteInternalfieldnamesMitAnzahl = dataComponents.stream().collect(Collectors.groupingBy(c -> c.properties.internalFieldName, Collectors.counting()))
+                .entrySet().stream().filter(doppelte -> doppelte.getValue() > 1).collect(Collectors.toMap(doppelte -> doppelte.getKey(), doppelte -> doppelte.getValue()));
+
+        if (doppelteInternalfieldnamesMitAnzahl.isEmpty()) {
+            return;
+        }
+
+
+        for(Map.Entry<String, Long> entry: doppelteInternalfieldnamesMitAnzahl.entrySet()) {
+            errorReport.addError(KOMPONENTE,"InternalFieldname <"+entry.getKey()+"> ist mehrfach vergeben: "+entry.getValue());
+        }
+
     }
 
     private void validateMethodDefinition(ErrorReport errorReport, MethodProperties methodProperties) {
