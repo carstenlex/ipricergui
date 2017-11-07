@@ -2,6 +2,8 @@ package ch.raiffeisen.ipricer.fxdesigner;
 
 import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
+import ch.raiffeisen.ipricer.fxdesigner.generator.Generator;
+import ch.raiffeisen.ipricer.fxdesigner.generator.GeneratorException;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -36,7 +38,6 @@ import java.util.ResourceBundle;
 import static ch.raiffeisen.ipricer.fxdesigner.domain.Page.METHOD;
 
 public class FXDesigner extends Application implements Initializable {
-
 
     private double orgSceneX;
     private double orgSceneY;
@@ -110,8 +111,6 @@ public class FXDesigner extends Application implements Initializable {
     @FXML
     private MenuItem menuGenerate;
 
-    @FXML
-    private TextField parentLabel;
 
     @FXML
     private MenuItem menuOpen;
@@ -131,12 +130,14 @@ public class FXDesigner extends Application implements Initializable {
         Methodenproperties
      */
     @FXML
-    private TextField childLabel;
+    public TextField childLabel;
     @FXML
-    private TextField methodName;
+    public TextField parentLabel;
+    @FXML
+    public TextField methodName;
 
     @FXML
-    private TextField methodLabel;
+    public TextField methodLabel;
 
     /*
     Struktur GUI
@@ -146,6 +147,8 @@ public class FXDesigner extends Application implements Initializable {
 
     @FXML
     private GridPane methodGrid;
+    @FXML
+    private GridPane parentGrid;
 
     @FXML
     private TabPane pageTabs;
@@ -158,9 +161,9 @@ public class FXDesigner extends Application implements Initializable {
     @FXML
     private Tab methodTab;
 
-    @FXML
-    private GridPane parentGrid;
 
+    @FXML
+    public Button generateDefinition;
 
     /*
     Komponentenauswahl
@@ -195,6 +198,7 @@ public class FXDesigner extends Application implements Initializable {
 
     public HashMap<Page, GridPane> gridFromPage = new HashMap<>();
 
+    Generator generator = new Generator();
 
     public static void main(String[] args) {
         launch(args);
@@ -223,6 +227,12 @@ public class FXDesigner extends Application implements Initializable {
     }
 
     public void generateDefinitionFile(ActionEvent actionEvent) {
+
+        try {
+            generator.generateDefinitionFile(this);
+        } catch (GeneratorException e) {
+            System.out.println(e.getErrorReport().toString());
+        }
     }
 
     public void openDefinitionFile(ActionEvent actionEvent) {
