@@ -1,13 +1,9 @@
 package ch.raiffeisen.ipricer.designer.generator;
 
-import ch.raiffeisen.ipricer.designer.PropertiesPanel;
-import ch.raiffeisen.ipricer.designer.domain.RecordType;
-import ch.raiffeisen.ipricer.designer.domain.RoleAccess;
 import ch.raiffeisen.ipricer.designer.page.Page;
 import ch.raiffeisen.ipricer.designer.page.PageMethod;
 import ch.raiffeisen.ipricer.designer.page.component.Datatype;
 import ch.raiffeisen.ipricer.designer.page.component.DesignComponent;
-import ch.raiffeisen.ipricer.designer.page.component.ipricer.IPricerProperties;
 import ch.raiffeisen.ipricer.designer.page.component.types.DesignComponentParam;
 
 import java.util.ArrayList;

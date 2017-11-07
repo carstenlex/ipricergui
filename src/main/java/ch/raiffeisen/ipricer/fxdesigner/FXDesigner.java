@@ -27,6 +27,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 
@@ -195,11 +196,14 @@ public class FXDesigner extends Application implements Initializable {
 
     public DesignComponent selectedDesignComponent;
 
+    FileChooser fileChooser = new FileChooser();
+
 
     public HashMap<Page, GridPane> gridFromPage = new HashMap<>();
 
     Generator generator = new Generator();
-    private Object allDesignComponents;
+
+    Stage window ;
 
     public static void main(String[] args) {
         launch(args);
@@ -216,7 +220,10 @@ public class FXDesigner extends Application implements Initializable {
         primaryStage.setFullScreen(false);
 
 
+
         primaryStage.show();
+
+        window = primaryStage;
     }
 
 
@@ -230,6 +237,7 @@ public class FXDesigner extends Application implements Initializable {
     public void generateDefinitionFile(ActionEvent actionEvent) {
 
         try {
+            fileChooser.showSaveDialog(window);
             generator.generateDefinitionFile(this);
         } catch (GeneratorException e) {
             System.out.println(e.getErrorReport().toString());
