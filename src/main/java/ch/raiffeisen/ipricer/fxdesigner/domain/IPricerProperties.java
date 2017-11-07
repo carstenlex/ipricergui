@@ -31,6 +31,10 @@ public class IPricerProperties {
      ************ Die getter sind für die Velocity-Engine
      */
 
+    public boolean isIndirectComponent() {
+        return indirectComponent;
+    }
+
     public int getGridX() {
         return gridX;
     }
