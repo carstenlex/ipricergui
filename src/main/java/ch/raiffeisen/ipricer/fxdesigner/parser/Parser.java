@@ -37,8 +37,20 @@ public class Parser {
         readUnderlyingMaskSection(definition.getUnderlyingMaskSection());
         readOptionMaskSection(definition.getOptionMaskSection());
 
+        readInitSection(definition.getInitSection());
         clearGrids();
         showComponentsOnGrids();
+    }
+
+    private void readInitSection(InitSection initSection) {
+        if (initSection == null || initSection.getInitDefinitions()==null){
+            return;
+        }
+
+        for(InitDefinition initDef: initSection.getInitDefinitions()){
+            DesignComponent component = componentByInternalName.get(initDef.getId());
+            component.properties.initValue = initDef.getInitValue();
+        }
     }
 
     //TODO gridLines verschwinden
@@ -55,9 +67,13 @@ public class Parser {
         }
         for(TypeMaskDefinition maskDef: optionMaskSection.getOptionMaskDefinitions()) { //TODO TypeMaskDefinition umbenennen -> MaskDefintiion
             DesignComponent component = componentByInternalName.get(maskDef.getId()); //TODO wenn die hier nicht gefunden wird -> ERROR
-            component.properties.gridX = maskDef.getCol();
-            component.properties.gridY = maskDef.getRow();
-            component.setWidthProperty(maskDef.getWidth());
+            if (component != null) {
+                component.properties.gridX = maskDef.getCol();
+                component.properties.gridY = maskDef.getRow();
+                component.setWidthProperty(maskDef.getWidth());
+            }else{
+                System.out.println("Komponente "+maskDef.getId()+" in OptionMask definiert, aber nicht in Data");
+            }
             //TODO hier noch -sep bearbeiten
         }
     }
@@ -68,9 +84,13 @@ public class Parser {
         }
         for(TypeMaskDefinition maskDef: underlyingMaskSection.getUnderlyingMaskDefinitions()) { //TODO TypeMaskDefinition umbenennen -> MaskDefintiion
             DesignComponent component = componentByInternalName.get(maskDef.getId()); //TODO wenn die hier nicht gefunden wird -> ERROR
-            component.properties.gridX = maskDef.getCol();
-            component.properties.gridY = maskDef.getRow();
-            component.setWidthProperty(maskDef.getWidth());
+            if (component != null) {
+                component.properties.gridX = maskDef.getCol();
+                component.properties.gridY = maskDef.getRow();
+                component.setWidthProperty(maskDef.getWidth());
+            } else {
+                System.out.println("Komponente "+maskDef.getId()+" in UnderlyingMask definiert, aber nicht in Data");
+            }
             //TODO hier noch -sep bearbeiten
         }
     }
@@ -81,9 +101,15 @@ public class Parser {
         }
         for(TypeMaskDefinition maskDef: typeMaskSection.getTypeMaskDefinitions()) { //TODO TypeMaskDefinition umbenennen -> MaskDefintiion
             DesignComponent component = componentByInternalName.get(maskDef.getId()); //TODO wenn die hier nicht gefunden wird -> ERROR
-            component.properties.gridX = maskDef.getCol();
-            component.properties.gridY = maskDef.getRow();
-            component.setWidthProperty(maskDef.getWidth());
+            if (component != null) {
+                component.properties.gridX = maskDef.getCol();
+                component.properties.gridY = maskDef.getRow();
+                component.setWidthProperty(maskDef.getWidth());
+            }else{
+                System.out.println("Komponente "+maskDef.getId()+" in TypeMask definiert, aber nicht in Data");
+
+
+            }
             //TODO hier noch -sep bearbeiten
         }
     }
