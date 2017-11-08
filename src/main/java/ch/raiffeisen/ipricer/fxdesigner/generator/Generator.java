@@ -6,15 +6,15 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import org.apache.commons.lang.StringUtils;
+
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.*;
 
 public class Generator {
 
@@ -74,6 +74,7 @@ public class Generator {
     }
 
     private List<DesignComponent> getInitComponents(FXDesigner fxDesigner) {
+
         List<DesignComponent> collect = fxDesigner.getAllDesignComponents().stream().filter(c -> !c.properties.isSeparator && StringUtils.isNotBlank(c.properties.initValue)).collect(Collectors.toList());
         return collect;
     }

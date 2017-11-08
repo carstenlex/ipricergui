@@ -1,9 +1,13 @@
 package ch.raiffeisen.ipricer.fxdesigner;
 
+import ch.raiffeisen.ipricer.definition.DefinitionDSL;
+import ch.raiffeisen.ipricer.definition.GeneratorResponse;
 import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
 import ch.raiffeisen.ipricer.fxdesigner.generator.Generator;
 import ch.raiffeisen.ipricer.fxdesigner.generator.GeneratorException;
+import ch.raiffeisen.ipricer.fxdesigner.generator.MethodProperties;
+import ch.raiffeisen.ipricer.fxdesigner.parser.Parser;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -29,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.eclipse.xtext.validation.Issue;
 
 
 import java.awt.Point;
@@ -41,10 +46,8 @@ import static ch.raiffeisen.ipricer.fxdesigner.domain.Page.METHOD;
 
 public class FXDesigner extends Application implements Initializable {
 
-    private double orgSceneX;
-    private double orgSceneY;
-    private double orgTranslateX;
-    private double orgTranslateY;
+    @FXML
+    public AnchorPane appPane;
 
     /*
     Properties
@@ -145,12 +148,12 @@ public class FXDesigner extends Application implements Initializable {
     Struktur GUI
      */
     @FXML
-    private GridPane childGrid;
+    public GridPane childGrid;
 
     @FXML
-    private GridPane methodGrid;
+    public GridPane methodGrid;
     @FXML
-    private GridPane parentGrid;
+    public GridPane parentGrid;
 
     @FXML
     private TabPane pageTabs;
@@ -205,8 +208,6 @@ public class FXDesigner extends Application implements Initializable {
 
     Generator generator = new Generator();
 
-    Stage window ;
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -221,11 +222,7 @@ public class FXDesigner extends Application implements Initializable {
         primaryStage.setScene(scene);
         primaryStage.setFullScreen(false);
 
-
-
         primaryStage.show();
-
-        window = primaryStage;
     }
 
 
@@ -236,7 +233,7 @@ public class FXDesigner extends Application implements Initializable {
     public void saveDefinitionFile(ActionEvent actionEvent) {
         try {
             if (definitionFileSave == null) {
-                definitionFileSave = fileChooser.showSaveDialog(window);
+                setDefinitionFileSave(fileChooser.showSaveDialog(null));
             }
 
             generator.generateDefinitionFile(this);
@@ -248,7 +245,7 @@ public class FXDesigner extends Application implements Initializable {
     public void generateDefinitionFile(ActionEvent actionEvent) {
 
         try {
-            definitionFileSave = fileChooser.showSaveDialog(window);
+            setDefinitionFileSave(fileChooser.showSaveDialog(null));
 
             generator.generateDefinitionFile(this);
         } catch (GeneratorException e) {
@@ -256,7 +253,15 @@ public class FXDesigner extends Application implements Initializable {
         }
     }
 
+    public void setDefinitionFileSave(File file){
+        definitionFileSave = file;
+        Stage window = (Stage)appPane.getScene().getWindow();
+        window.setTitle("GUIDesigner - Target Definitionfile: "+file.getAbsolutePath());
+    }
+
     public void openDefinitionFile(ActionEvent actionEvent) {
+        File file = fileChooser.showOpenDialog(null);
+        Parser parser = new Parser(this, file);
     }
 
     @Override
@@ -373,8 +378,8 @@ public class FXDesigner extends Application implements Initializable {
                     component.setDesigner(ref);
                     component.setGridPosition(zelle);
                     component.setPage((Page) grid.getUserData());
-                    component.properties.internalFieldName = UUID.randomUUID().toString();
-                    component.properties.externalName = UUID.randomUUID().toString();
+                    component.properties.internalFieldName = buildUniqueDefId();
+                    component.properties.externalName = buildUniqueDefId();
                     grid.add(component, zelle.x, zelle.y);
                     component.fireEvent(new MouseEvent(MouseEvent.MOUSE_PRESSED, event.getX(),
                             event.getY(), 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
@@ -390,9 +395,13 @@ public class FXDesigner extends Application implements Initializable {
         });
     }
 
+    private String buildUniqueDefId() {
+        return "comp_"+UUID.randomUUID().toString().replaceAll("-","_");
+    }
+
 
     public void initializeGrid(GridPane grid) {
-        int numCols = 5;
+        int numCols = 8;
         int numRows = 20;
 
         for (int i = 0; i < numCols; i++) {
@@ -514,5 +523,33 @@ public class FXDesigner extends Application implements Initializable {
             }
         }
         return designComponents;
+    }
+
+    public void generateJava(ActionEvent actionEvent) {
+        DefinitionDSL dsl = new DefinitionDSL();
+        GeneratorResponse generatorResponse = dsl.generateJavaFromDefinition(definitionFileSave.toURI());
+
+        System.out.println("Issues");
+        for(Issue issue: generatorResponse.getIssues()) {
+            System.out.println(issue);
+        }
+
+        System.out.println("**************************************Files");
+        for(Map.Entry<String, CharSequence> entry: generatorResponse.getGeneratedFiles().entrySet()){
+            System.out.println("**************************** "+entry.getKey());
+            System.out.println(entry.getValue());
+
+        }
+
+
+
+
+    }
+
+    public void setMethodProperties(MethodProperties mp) {
+        this.childLabel.setText(mp.childLabel);
+        this.parentLabel.setText(mp.parentLabel);
+        this.methodLabel.setText(mp.methodLabel);
+        this.methodName.setText(mp.methodName);
     }
 }
