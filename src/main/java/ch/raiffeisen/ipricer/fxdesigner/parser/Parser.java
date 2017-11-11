@@ -4,15 +4,9 @@ import ch.raiffeisen.ipricer.definition.DefinitionDSL;
 import ch.raiffeisen.ipricer.definition.definitionDSL.*;
 import ch.raiffeisen.ipricer.definition.definitionDSL.impl.DefinitionImpl;
 import ch.raiffeisen.ipricer.fxdesigner.FXDesigner;
-import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectDate;
-import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectString;
-import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectZahl;
-import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentSeparator;
+import ch.raiffeisen.ipricer.fxdesigner.component.*;
 import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
-import ch.raiffeisen.ipricer.fxdesigner.domain.GridGroesse;
-import ch.raiffeisen.ipricer.fxdesigner.domain.Page;
-import ch.raiffeisen.ipricer.fxdesigner.domain.RecordType;
-import ch.raiffeisen.ipricer.fxdesigner.domain.RoleAccess;
+import ch.raiffeisen.ipricer.fxdesigner.domain.*;
 import ch.raiffeisen.ipricer.fxdesigner.generator.MethodProperties;
 import javafx.scene.layout.GridPane;
 import org.eclipse.emf.common.util.EList;
@@ -148,7 +142,31 @@ public class Parser {
                 switch(fieldType){
 
                     case STRING_FIELD:
-                        component = new DesignComponentDirectString();
+                        Optional<OptionValproc> optionValproc = fd.getOptions().stream().filter(OptionValproc.class::isInstance).map(OptionValproc.class::cast).findFirst();
+                        if (optionValproc.isPresent()){
+                            try {
+                                ProcedureName procedureName = ProcedureName.valueOf(optionValproc.get().getTclProc());
+                                switch (procedureName){
+
+                                    case GetAllUsersAndGroups:
+                                        component = new DesignComponentAllUsersAndGroups();
+                                        break;
+                                    case GetJa:
+                                        component = new DesignComponentJa();
+                                        break;
+                                    case GetRundungsregeln:
+                                        component = new DesignComponentRundungsregel();
+                                        break;
+                                    case GetYesNo:
+                                        component = new DesignComponentYesNo();
+                                        break;
+                                }
+                            } catch (IllegalArgumentException e) {
+                                System.out.println("Keine bekannt valproc: "+optionValproc.get().getTclProc());
+                            }
+                        }else {
+                            component = new DesignComponentDirectString();
+                        }
                         break;
                     case INTEGER_FIELD:
                     case PRICE_FIELD:

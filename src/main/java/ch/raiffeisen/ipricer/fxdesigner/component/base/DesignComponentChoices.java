@@ -59,8 +59,8 @@ public abstract class DesignComponentChoices extends DesignComponent implements 
     }
 
     public void setWidthProperty(int widthProperty) {
-        this.choices.setPrefWidth(widthProperty);
-        this.choices.setMinWidth(widthProperty);
+        this.choices.setPrefWidth(widthProperty * SCALEFACTOR);
+        this.choices.setMinWidth(widthProperty*SCALEFACTOR);
         this.properties.width= widthProperty;
     }
 

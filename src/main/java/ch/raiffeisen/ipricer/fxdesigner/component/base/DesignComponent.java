@@ -32,7 +32,7 @@ public abstract class DesignComponent extends HBox {
     protected FXDesigner designer;
     protected Page page;
 
-    private static final int SCALEFACTOR = 3; //die width in den MaskSections ist in "Zeichen" angegeben, wir wollen eine Pixelbreite daraus rechnen
+    protected static final int SCALEFACTOR = 3; //die width in den MaskSections ist in "Zeichen" angegeben, wir wollen eine Pixelbreite daraus rechnen
 
 
     public DesignComponent() {
