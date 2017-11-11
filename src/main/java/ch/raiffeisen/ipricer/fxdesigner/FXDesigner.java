@@ -404,29 +404,29 @@ public class FXDesigner extends Application implements Initializable {
     public void initializeGrid(GridPane grid, GridGroesse gridGroesse) {
 
         for (int i = 0; i < gridGroesse.cols; i++) {
-            addColumnConstraint(grid);
+            addColumnConstraint(grid, gridGroesse);
         }
 
         for (int i = 0; i < gridGroesse.rows; i++) {
-            addRowConstraint(grid);
+            addRowConstraint(grid, gridGroesse);
         }
 
     }
 
-    private void addRowConstraint(GridPane grid) {
+    private void addRowConstraint(GridPane grid,GridGroesse gridGroesse) {
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setVgrow(Priority.SOMETIMES);
         rowConstraints.setMinHeight(10.0);
-        rowConstraints.setPrefHeight(30.0);
+        rowConstraints.setPrefHeight(grid.getHeight() / gridGroesse.rows);
         rowConstraints.setValignment(VPos.CENTER);
         grid.getRowConstraints().add(rowConstraints);
     }
 
-    private void addColumnConstraint(GridPane grid) {
+    private void addColumnConstraint(GridPane grid, GridGroesse gridGroesse) {
         ColumnConstraints colConstraints = new ColumnConstraints();
         colConstraints.setHgrow(Priority.SOMETIMES);
         colConstraints.setMinWidth(10.0);
-        colConstraints.setPrefWidth(100.0);
+        colConstraints.setPrefWidth(grid.getWidth() / gridGroesse.cols);
         colConstraints.setHalignment(HPos.CENTER);
         grid.getColumnConstraints().add(colConstraints);
     }
@@ -560,9 +560,6 @@ public class FXDesigner extends Application implements Initializable {
         this.methodName.setText(mp.methodName);
     }
 
-    public void addMethodCol(ActionEvent actionEvent) {
-        addColumnConstraint(methodGrid);
-    }
 
     public void reInitGrid(GridPane grid, GridGroesse gridGroesse) {
         Node nodeWithGridlines = grid.getChildren().get(0);

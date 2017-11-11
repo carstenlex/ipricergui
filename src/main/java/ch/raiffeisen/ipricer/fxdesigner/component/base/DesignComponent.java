@@ -113,10 +113,14 @@ public abstract class DesignComponent extends HBox {
         orgTranslateX = ((Node) (t.getSource())).getTranslateX();
         orgTranslateY = ((Node) (t.getSource())).getTranslateY();
 
+        if (designer.selectedDesignComponent != null){
+            designer.selectedDesignComponent.getStyleClass().remove("selectedComponent");
+        }
         designer.selectedDesignComponent = this;
         designer.showPropertiesForSelectedComponent();
 
-        this.setStyle("-fx-border-color: black; -fx-border-color: red; -fx-border-width: 3px");
+        this.getStyleClass().add("selectedComponent");
+
     }
 
     //FXML
@@ -218,8 +222,8 @@ public abstract class DesignComponent extends HBox {
     }
 
     public void setWidthProperty(int widthProperty) {
-        this.textField.setPrefWidth(widthProperty);
-        this.textField.setMinWidth(widthProperty);
+        this.textField.setPrefWidth(widthProperty * 8);
+        this.textField.setMinWidth(widthProperty * 8);
         this.properties.width = widthProperty;
     }
 
