@@ -381,8 +381,7 @@ public class FXDesigner extends Application implements Initializable {
                     component.setDesigner(ref);
                     component.setGridPosition(zelle);
                     component.setPage((Page) grid.getUserData());
-                    component.properties.internalFieldName = buildUniqueDefId();
-                    component.properties.externalName = buildUniqueDefId();
+
                     grid.add(component, zelle.x, zelle.y);
                     component.fireEvent(new MouseEvent(MouseEvent.MOUSE_PRESSED, event.getX(),
                             event.getY(), 0, 0, MouseButton.PRIMARY, 1, true, true, true, true,
@@ -398,9 +397,7 @@ public class FXDesigner extends Application implements Initializable {
         });
     }
 
-    private String buildUniqueDefId() {
-        return "comp_" + UUID.randomUUID().toString().replaceAll("-", "_");
-    }
+
 
 
     public void initializeGrid(GridPane grid, GridGroesse gridGroesse) {

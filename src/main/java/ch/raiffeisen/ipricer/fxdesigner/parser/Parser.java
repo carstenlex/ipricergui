@@ -105,8 +105,8 @@ public class Parser {
 
             DesignComponent component = componentByInternalName.get(maskDef.getId()); //TODO wenn die hier nicht gefunden wird -> ERROR
             if (component != null) {
-                if (maskDef.getSeparator() != null) { //TODO fix it right
-                    component = component.copy(); //Separator ist nur einmal definiert im Data-Bereich, wird aber mehrfach benutzt -> für GUI neue Component
+                if (maskDef.getSeparator() != null) {
+                    component = DesignComponentSeparator.from(component);//Separator ist nur einmal definiert im Data-Bereich, wird aber mehrfach benutzt -> für GUI neue Component
                     component.properties.isSeparator = true;
                 }
                 component.properties.gridX = maskDef.getCol();
@@ -114,7 +114,6 @@ public class Parser {
                 component.setWidthProperty(maskDef.getWidth());
                 try {
                     GridPane gridPane = fxDesigner.gridFromPage.get(page);
-                    System.out.println("GridPane: "+gridPane.getUserData());
                     gridPane.add(component, component.properties.gridX, component.properties.gridY);
                 } catch (IllegalArgumentException e) {
                     System.out.println("Doppelte Komponente auf Page: " + page + "; Komponente: " + component.toString());

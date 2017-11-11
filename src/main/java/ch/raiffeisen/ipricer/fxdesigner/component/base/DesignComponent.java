@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.UUID;
 
 public abstract class DesignComponent extends HBox {
     @FXML
@@ -22,14 +23,14 @@ public abstract class DesignComponent extends HBox {
 
     @FXML
     TextField textField;
-    private double orgTranslateY;
-    private double orgSceneX;
-    private double orgSceneY;
-    private double orgTranslateX;
+    protected double orgTranslateY;
+    protected double orgSceneX;
+    protected double orgSceneY;
+    protected double orgTranslateX;
 
     public IPricerProperties properties = new IPricerProperties();
-    private FXDesigner designer;
-    private Page page;
+    protected FXDesigner designer;
+    protected Page page;
 
 
     public DesignComponent() {
@@ -44,11 +45,16 @@ public abstract class DesignComponent extends HBox {
             setLabeltext(properties.labelText);
             setRoleAccess(properties.roleAccess);
             setWidthProperty(properties.width);
+            properties.internalFieldName = buildUniqueDefId();
+            properties.externalName = buildUniqueDefId();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    protected String buildUniqueDefId() {
+        return "comp_" + UUID.randomUUID().toString().replaceAll("-", "_");
+    }
 
     public IPricerProperties getDesignComponentProperties() {
         return properties;
