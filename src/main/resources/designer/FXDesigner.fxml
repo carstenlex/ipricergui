@@ -58,6 +58,7 @@
                                 <Button fx:id="generateDefinition" text="Generate Def"
                                         onAction="#generateDefinitionFile"/>
                                 <Button fx:id="saveDefinition" text="Save Def" onAction="#saveDefinitionFile"/>
+                                <Button fx:id="addColumn" text="add Col" onAction="#addMethodCol"/>
                                 <VBox prefHeight="604.0" prefWidth="117.0" VBox.vgrow="ALWAYS">
                                     <children>
                                         <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0"

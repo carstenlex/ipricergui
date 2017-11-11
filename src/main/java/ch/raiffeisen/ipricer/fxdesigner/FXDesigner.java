@@ -110,6 +110,9 @@ public class FXDesigner extends Application implements Initializable {
     @FXML
     public Button propertiesUebernehmen;
 
+    @FXML
+    public Button addColumn;
+
     /*
     Menu
      */
@@ -253,10 +256,10 @@ public class FXDesigner extends Application implements Initializable {
         }
     }
 
-    public void setDefinitionFileSave(File file){
+    public void setDefinitionFileSave(File file) {
         definitionFileSave = file;
-        Stage window = (Stage)appPane.getScene().getWindow();
-        window.setTitle("GUIDesigner - Target Definitionfile: "+file.getAbsolutePath());
+        Stage window = (Stage) appPane.getScene().getWindow();
+        window.setTitle("GUIDesigner - Target Definitionfile: " + file.getAbsolutePath());
     }
 
     public void openDefinitionFile(ActionEvent actionEvent) {
@@ -272,10 +275,10 @@ public class FXDesigner extends Application implements Initializable {
 
         propertyDatatype.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> System.out.println("Neuer Wert: " + newValue + "; alterWert=" + oldValue));
 
-
-        initializeGrid(methodGrid);
-        initializeGrid(parentGrid);
-        initializeGrid(childGrid);
+        GridGroesse gridGroesse = new GridGroesse();
+        initializeGrid(methodGrid, gridGroesse);
+        initializeGrid(parentGrid, gridGroesse);
+        initializeGrid(childGrid, gridGroesse);
 
 
         ToggleGroup selectOneComponent = new ToggleGroup();
@@ -396,33 +399,38 @@ public class FXDesigner extends Application implements Initializable {
     }
 
     private String buildUniqueDefId() {
-        return "comp_"+UUID.randomUUID().toString().replaceAll("-","_");
+        return "comp_" + UUID.randomUUID().toString().replaceAll("-", "_");
     }
 
 
-    public void initializeGrid(GridPane grid) {
-        int numCols = 8;
-        int numRows = 20;
+    public void initializeGrid(GridPane grid, GridGroesse gridGroesse) {
 
-        for (int i = 0; i < numCols; i++) {
-            ColumnConstraints colConstraints = new ColumnConstraints();
-            colConstraints.setHgrow(Priority.SOMETIMES);
-            colConstraints.setMinWidth(10.0);
-            colConstraints.setPrefWidth(100.0);
-            colConstraints.setHalignment(HPos.CENTER);
-            grid.getColumnConstraints().add(colConstraints);
+        for (int i = 0; i < gridGroesse.cols; i++) {
+            addColumnConstraint(grid);
         }
 
-        for (int i = 0; i < numRows; i++) {
-            RowConstraints rowConstraints = new RowConstraints();
-            rowConstraints.setVgrow(Priority.SOMETIMES);
-            rowConstraints.setMinHeight(10.0);
-            rowConstraints.setPrefHeight(30.0);
-            rowConstraints.setValignment(VPos.CENTER);
-            grid.getRowConstraints().add(rowConstraints);
+        for (int i = 0; i < gridGroesse.rows; i++) {
+            addRowConstraint(grid);
         }
 
+    }
 
+    private void addRowConstraint(GridPane grid) {
+        RowConstraints rowConstraints = new RowConstraints();
+        rowConstraints.setVgrow(Priority.SOMETIMES);
+        rowConstraints.setMinHeight(10.0);
+        rowConstraints.setPrefHeight(30.0);
+        rowConstraints.setValignment(VPos.CENTER);
+        grid.getRowConstraints().add(rowConstraints);
+    }
+
+    private void addColumnConstraint(GridPane grid) {
+        ColumnConstraints colConstraints = new ColumnConstraints();
+        colConstraints.setHgrow(Priority.SOMETIMES);
+        colConstraints.setMinWidth(10.0);
+        colConstraints.setPrefWidth(100.0);
+        colConstraints.setHalignment(HPos.CENTER);
+        grid.getColumnConstraints().add(colConstraints);
     }
 
     private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
@@ -476,8 +484,8 @@ public class FXDesigner extends Application implements Initializable {
         MenuItem deleteComponent = new MenuItem("Delete");
 
         deleteComponent.setOnAction(e ->
-                gridFromPage.get(currentPage).getChildren().remove(contextComponent)
-        );
+                        gridFromPage.get(currentPage).getChildren().remove(contextComponent)
+                                   );
         moveToMethod.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.METHOD));
         moveToParent.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.PARENT));
         moveToChild.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.CHILD));
@@ -501,7 +509,7 @@ public class FXDesigner extends Application implements Initializable {
 
             contextComponent.setPage(newPage);
             showPropertiesForSelectedComponent();
-            gridFromPage.get(newPage).add(contextComponent,contextComponent.properties.gridX,contextComponent.properties.gridY);
+            gridFromPage.get(newPage).add(contextComponent, contextComponent.properties.gridX, contextComponent.properties.gridY);
         };
     }
 
@@ -517,9 +525,9 @@ public class FXDesigner extends Application implements Initializable {
     private List<DesignComponent> getDesignComponents(GridPane grid) {
         ObservableList<Node> children = grid.getChildren();
         List<DesignComponent> designComponents = new ArrayList<>();
-        for(Node node: children) {
-            if (node instanceof DesignComponent){
-                designComponents.add((DesignComponent)node);
+        for (Node node : children) {
+            if (node instanceof DesignComponent) {
+                designComponents.add((DesignComponent) node);
             }
         }
         return designComponents;
@@ -530,18 +538,16 @@ public class FXDesigner extends Application implements Initializable {
         GeneratorResponse generatorResponse = dsl.generateJavaFromDefinition(definitionFileSave.toURI());
 
         System.out.println("Issues");
-        for(Issue issue: generatorResponse.getIssues()) {
+        for (Issue issue : generatorResponse.getIssues()) {
             System.out.println(issue);
         }
 
         System.out.println("**************************************Files");
-        for(Map.Entry<String, CharSequence> entry: generatorResponse.getGeneratedFiles().entrySet()){
-            System.out.println("**************************** "+entry.getKey());
+        for (Map.Entry<String, CharSequence> entry : generatorResponse.getGeneratedFiles().entrySet()) {
+            System.out.println("**************************** " + entry.getKey());
             System.out.println(entry.getValue());
 
         }
-
-
 
 
     }
@@ -551,5 +557,19 @@ public class FXDesigner extends Application implements Initializable {
         this.parentLabel.setText(mp.parentLabel);
         this.methodLabel.setText(mp.methodLabel);
         this.methodName.setText(mp.methodName);
+    }
+
+    public void addMethodCol(ActionEvent actionEvent) {
+        addColumnConstraint(methodGrid);
+    }
+
+    public void reInitGrid(GridPane grid, GridGroesse gridGroesse) {
+        Node nodeWithGridlines = grid.getChildren().get(0);
+        grid.getChildren().clear();
+        grid.getChildren().add(0,nodeWithGridlines);
+        grid.getRowConstraints().clear();
+        grid.getColumnConstraints().clear();
+
+        initializeGrid(grid, gridGroesse);
     }
 }

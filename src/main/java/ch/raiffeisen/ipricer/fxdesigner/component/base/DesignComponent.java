@@ -2,7 +2,6 @@ package ch.raiffeisen.ipricer.fxdesigner.component.base;
 
 import ch.raiffeisen.ipricer.fxdesigner.FXDesigner;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -12,6 +11,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.awt.*;
 import java.io.IOException;
@@ -172,7 +172,7 @@ public abstract class DesignComponent extends HBox {
         return zelle;
     }
 
-    protected DesignComponent copy() {
+    public DesignComponent copy() {
         DesignComponent component = create();
         component.setLabeltext(this.labelText.getText());
         component.setRoleAccess(this.properties.roleAccess);
@@ -226,5 +226,13 @@ public abstract class DesignComponent extends HBox {
         this.properties.recordType = page.getDefault();
     }
 
+    @Override
+    public String toString() {
+        String t = "";
+        t += this.getClass().getSimpleName();
+        t += "\n";
+        t+= this.properties.toString();
 
+return t;
+    }
 }

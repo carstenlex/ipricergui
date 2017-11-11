@@ -4,21 +4,25 @@ import ch.raiffeisen.ipricer.definition.DefinitionDSL;
 import ch.raiffeisen.ipricer.definition.definitionDSL.*;
 import ch.raiffeisen.ipricer.definition.definitionDSL.impl.DefinitionImpl;
 import ch.raiffeisen.ipricer.fxdesigner.FXDesigner;
+import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectDate;
 import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectString;
+import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectZahl;
+import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentSeparator;
 import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
+import ch.raiffeisen.ipricer.fxdesigner.domain.GridGroesse;
 import ch.raiffeisen.ipricer.fxdesigner.domain.Page;
 import ch.raiffeisen.ipricer.fxdesigner.domain.RecordType;
 import ch.raiffeisen.ipricer.fxdesigner.domain.RoleAccess;
 import ch.raiffeisen.ipricer.fxdesigner.generator.MethodProperties;
+import javafx.scene.layout.GridPane;
 import org.eclipse.emf.common.util.EList;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Parser {
+
 
     private FXDesigner fxDesigner;
 
@@ -31,164 +35,216 @@ public class Parser {
         DefinitionImpl definition = dsl.parseDefinition(file.toURI());
 
         readLabels(definition);
-        readDataSection(definition.getData());
+        Set<String> separators = ermittleSeparators(definition);
+        readDataSection(definition.getData(), separators);
 
-        readTypeMaskSection(definition.getTypeMaskSection());
-        readUnderlyingMaskSection(definition.getUnderlyingMaskSection());
-        readOptionMaskSection(definition.getOptionMaskSection());
+        TypeMaskSection typeMaskSection = definition.getTypeMaskSection();
+        UnderlyingMaskSection underlyingMaskSection = definition.getUnderlyingMaskSection();
+        OptionMaskSection optionMaskSection = definition.getOptionMaskSection();
+        readTypeMaskSection(typeMaskSection);
+        readUnderlyingMaskSection(underlyingMaskSection);
+        readOptionMaskSection(optionMaskSection);
 
         readInitSection(definition.getInitSection());
-        clearGrids();
-        showComponentsOnGrids();
+
     }
 
     private void readInitSection(InitSection initSection) {
-        if (initSection == null || initSection.getInitDefinitions()==null){
+        if (initSection == null || initSection.getInitDefinitions() == null) {
             return;
         }
 
-        for(InitDefinition initDef: initSection.getInitDefinitions()){
+        for (InitDefinition initDef : initSection.getInitDefinitions()) {
             DesignComponent component = componentByInternalName.get(initDef.getId());
             component.properties.initValue = initDef.getInitValue();
         }
     }
 
-    //TODO gridLines verschwinden
-    private void clearGrids() {
-        fxDesigner.methodGrid.getChildren().clear();
-        fxDesigner.childGrid.getChildren().clear();
-        fxDesigner.parentGrid.getChildren().clear();
-    }
+
 
     private void readOptionMaskSection(OptionMaskSection optionMaskSection) {
 
-        if (optionMaskSection == null || optionMaskSection.getOptionMaskDefinitions() == null){
+        if (optionMaskSection == null || optionMaskSection.getOptionMaskDefinitions() == null) {
             return;
         }
-        for(TypeMaskDefinition maskDef: optionMaskSection.getOptionMaskDefinitions()) { //TODO TypeMaskDefinition umbenennen -> MaskDefintiion
-            DesignComponent component = componentByInternalName.get(maskDef.getId()); //TODO wenn die hier nicht gefunden wird -> ERROR
-            if (component != null) {
-                component.properties.gridX = maskDef.getCol();
-                component.properties.gridY = maskDef.getRow();
-                component.setWidthProperty(maskDef.getWidth());
-            }else{
-                System.out.println("Komponente "+maskDef.getId()+" in OptionMask definiert, aber nicht in Data");
-            }
-            //TODO hier noch -sep bearbeiten
-        }
+        GridGroesse gridGroesse = ermittleGridGroesse(optionMaskSection.getOptionMaskDefinitions());
+        fxDesigner.reInitGrid(fxDesigner.childGrid, gridGroesse);
+        handleMaskSection(optionMaskSection.getOptionMaskDefinitions(), Page.CHILD);
     }
 
     private void readUnderlyingMaskSection(UnderlyingMaskSection underlyingMaskSection) {
-        if (underlyingMaskSection == null || underlyingMaskSection.getUnderlyingMaskDefinitions() == null){
+        if (underlyingMaskSection == null || underlyingMaskSection.getUnderlyingMaskDefinitions() == null) {
             return;
         }
-        for(TypeMaskDefinition maskDef: underlyingMaskSection.getUnderlyingMaskDefinitions()) { //TODO TypeMaskDefinition umbenennen -> MaskDefintiion
-            DesignComponent component = componentByInternalName.get(maskDef.getId()); //TODO wenn die hier nicht gefunden wird -> ERROR
-            if (component != null) {
-                component.properties.gridX = maskDef.getCol();
-                component.properties.gridY = maskDef.getRow();
-                component.setWidthProperty(maskDef.getWidth());
-            } else {
-                System.out.println("Komponente "+maskDef.getId()+" in UnderlyingMask definiert, aber nicht in Data");
-            }
-            //TODO hier noch -sep bearbeiten
-        }
+
+        GridGroesse gridGroesse = ermittleGridGroesse(underlyingMaskSection.getUnderlyingMaskDefinitions());
+        fxDesigner.reInitGrid(fxDesigner.parentGrid, gridGroesse);
+        handleMaskSection(underlyingMaskSection.getUnderlyingMaskDefinitions(), Page.PARENT);
+
     }
 
     private void readTypeMaskSection(TypeMaskSection typeMaskSection) {
-        if (typeMaskSection == null || typeMaskSection.getTypeMaskDefinitions() == null){
+        if (typeMaskSection == null || typeMaskSection.getTypeMaskDefinitions() == null) {
             return;
         }
-        for(TypeMaskDefinition maskDef: typeMaskSection.getTypeMaskDefinitions()) { //TODO TypeMaskDefinition umbenennen -> MaskDefintiion
+        GridGroesse gridGroesse = ermittleGridGroesse(typeMaskSection.getTypeMaskDefinitions());
+        fxDesigner.reInitGrid(fxDesigner.methodGrid, gridGroesse);
+        handleMaskSection(typeMaskSection.getTypeMaskDefinitions(), Page.METHOD);
+    }
+
+    private GridGroesse ermittleGridGroesse(EList<TypeMaskDefinition> maskDefinitions) {
+        GridGroesse gg = new GridGroesse();
+        gg.cols = maskDefinitions.stream().map(def -> def.getCol()).reduce(Integer::max).orElse(GridGroesse.DEFAULT_COLS);
+        gg.rows = maskDefinitions.stream().map(def -> def.getRow()).reduce(Integer::max).orElse(GridGroesse.DEFAULT_ROWS);
+        return gg;
+
+    }
+
+    private void handleMaskSection(List<TypeMaskDefinition> maskDefinitions, Page page) {
+        for (TypeMaskDefinition maskDef : maskDefinitions) { //TODO TypeMaskDefinition umbenennen -> MaskDefintiion
+
             DesignComponent component = componentByInternalName.get(maskDef.getId()); //TODO wenn die hier nicht gefunden wird -> ERROR
             if (component != null) {
+                if (maskDef.getSeparator() != null) { //TODO fix it right
+                    component = component.copy(); //Separator ist nur einmal definiert im Data-Bereich, wird aber mehrfach benutzt -> für GUI neue Component
+                    component.properties.isSeparator = true;
+                }
                 component.properties.gridX = maskDef.getCol();
                 component.properties.gridY = maskDef.getRow();
                 component.setWidthProperty(maskDef.getWidth());
-            }else{
-                System.out.println("Komponente "+maskDef.getId()+" in TypeMask definiert, aber nicht in Data");
-
-
+                try {
+                    GridPane gridPane = fxDesigner.gridFromPage.get(page);
+                    System.out.println("GridPane: "+gridPane.getUserData());
+                    gridPane.add(component, component.properties.gridX, component.properties.gridY);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Doppelte Komponente auf Page: " + page + "; Komponente: " + component.toString());
+                }
+            } else {
+                System.out.println("Komponente " + maskDef.getId() + " in TypeMask definiert, aber nicht in Data");
             }
-            //TODO hier noch -sep bearbeiten
+
         }
     }
 
-    private void showComponentsOnGrids() {
-        List<DesignComponent> methodComponents = componentByInternalName.values().stream().filter(methodComponent -> methodComponent.getPage() == Page.METHOD).collect(Collectors.toList());
-        for(DesignComponent component: methodComponents) {
-            fxDesigner.methodGrid.add(component,component.properties.gridX, component.properties.gridY);
-        }
-
-        List<DesignComponent> parentComponents = componentByInternalName.values().stream().filter(methodComponent -> methodComponent.getPage() == Page.PARENT).collect(Collectors.toList());
-        for(DesignComponent component: parentComponents) {
-            fxDesigner.parentGrid.add(component,component.properties.gridX, component.properties.gridY);
-        }
-
-        List<DesignComponent> childComponents = componentByInternalName.values().stream().filter(methodComponent -> methodComponent.getPage() == Page.CHILD).collect(Collectors.toList());
-        for(DesignComponent component: childComponents) {
-            fxDesigner.methodGrid.add(component,component.properties.gridX, component.properties.gridY);
-        }
-    }
-
-    private void readDataSection(Data data) {
+    /**
+     * In der DataSection werden alle Felder definiert. Allerdings wird ein Seprator einfach als String definiert und nur
+     * in den einzelnen Mask-Sections mit der Option "-sep" markiert. Daher werden hier noch die Mask-Sections durchlaufen
+     * und die Namen der Felder ermittelt, die ein Separator sind
+     *
+     * @param data
+     * @param separators
+     */
+    private void readDataSection(Data data, Set<String> separators) {
         EList<FieldDefinition> fieldDefinitions = data.getFieldDefinitions();
-
 
         for (FieldDefinition fd : fieldDefinitions) {
             FIELD_TYPE fieldType = fd.getFieldType();
-            if (FIELD_TYPE.STRING_FIELD == fieldType) {
-                DesignComponentDirectString componentDirectString = new DesignComponentDirectString();
-                componentDirectString.setDesigner(fxDesigner);
-                componentDirectString.properties.internalFieldName = fd.getId();
-                componentDirectString.properties.externalName = fd.getFieldName();
-                componentDirectString.setLabeltext(fd.getName());
-                componentDirectString.setRoleAccess(mapRoleAccess(fd.getAccess()));
-                componentDirectString.setPage(mapRecordClassToPage(fd.getRecordClass()));
-                componentDirectString.properties.recordType=mapRecordClassToRecordType(fd.getRecordClass());
-                componentDirectString.properties.maxLength = fd.getLength();
-                for(Option option: fd.getOptions()){
-                    if (option instanceof  OptionValproc){
-                        OptionValproc optionValproc = (OptionValproc) option;
-                        componentDirectString.properties.procedureNameForValues = optionValproc.getTclProc();
-                    }
-                    if (option instanceof OptionStrict){
-                        OptionStrict optionStrict = (OptionStrict)option;
-                        componentDirectString.properties.strict = optionStrict.isStrict();
-                    }
+            DesignComponent component = null;
+            if (separators.contains(fd.getId())) {
+                component = new DesignComponentSeparator();
+            }else {
+                switch(fieldType){
+
+                    case STRING_FIELD:
+                        component = new DesignComponentDirectString();
+                        break;
+                    case INTEGER_FIELD:
+                    case PRICE_FIELD:
+                    case DOUBLE_FIELD:
+                    case ZAHL_FIELD:
+                        component = new DesignComponentDirectZahl();
+                        break;
+                    case TIME_FIELD:
+                    case DATE_FIELD:
+                        component = new DesignComponentDirectDate();
+                        break;
                 }
-                componentByInternalName.put(fd.getId(), componentDirectString);
             }
+            component.setDesigner(fxDesigner);
+            component.properties.internalFieldName = fd.getId();
+            component.properties.externalName = fd.getFieldName();
+            component.setLabeltext(fd.getName());
+            component.setRoleAccess(mapRoleAccess(fd.getAccess()));
+            component.setPage(mapRecordClassToPage(fd.getRecordClass()));
+            component.properties.recordType = mapRecordClassToRecordType(fd.getRecordClass());
+            component.properties.maxLength = fd.getLength();
+            for (Option option : fd.getOptions()) {
+                if (option instanceof OptionValproc) {
+                    OptionValproc optionValproc = (OptionValproc) option;
+                    component.properties.procedureNameForValues = optionValproc.getTclProc();
+                }
+                if (option instanceof OptionStrict) {
+                    OptionStrict optionStrict = (OptionStrict) option;
+                    component.properties.strict = optionStrict.isStrict();
+                }
+            }
+            componentByInternalName.put(fd.getId(), component);
+
         }
 
     }
 
-    private RecordType mapRecordClassToRecordType(RECORDCLASS recordClass) {
-        switch(recordClass){
+    private Set<String> ermittleSeparators(DefinitionImpl definition) {
 
-            case METHOD_READ_ONLY: return RecordType.B;
-            case PARENT_READ_ONLY: return RecordType.U;
-            case PARENT_READ_WRITE: return RecordType.G;
-            case PARENT_READ_REFERENCE: return RecordType.R;
-            case CHILD_READ_ONLY: return RecordType.D;
-            case CHILD_READ_WRITE: return RecordType.P;
-            case CHILD_READ_REFERENCE: return RecordType.S;
-            default: return RecordType.B;
+        EList<TypeMaskDefinition> tMaskDefinitions = definition.getTypeMaskSection().getTypeMaskDefinitions();
+        EList<TypeMaskDefinition> uMaskDefinitions=definition.getUnderlyingMaskSection().getUnderlyingMaskDefinitions();
+        EList<TypeMaskDefinition> oMaskDefinitions=definition.getOptionMaskSection().getOptionMaskDefinitions();
+
+        List<TypeMaskDefinition> maskDefinitions = new ArrayList<>();
+        maskDefinitions.addAll(tMaskDefinitions);
+        maskDefinitions.addAll(uMaskDefinitions);
+        maskDefinitions.addAll(oMaskDefinitions);
+
+        Set<String> separatorNames = maskDefinitions.stream()
+                .filter(def -> def.getSeparator() != null)
+                .map(def -> def.getId())
+                .collect(Collectors.toSet());
+
+        if (separatorNames == null) {
+            separatorNames = new HashSet<>();
+        }
+
+        return separatorNames;
+    }
+
+    private RecordType mapRecordClassToRecordType(RECORDCLASS recordClass) {
+        switch (recordClass) {
+
+            case METHOD_READ_ONLY:
+                return RecordType.B;
+            case PARENT_READ_ONLY:
+                return RecordType.U;
+            case PARENT_READ_WRITE:
+                return RecordType.G;
+            case PARENT_READ_REFERENCE:
+                return RecordType.R;
+            case CHILD_READ_ONLY:
+                return RecordType.D;
+            case CHILD_READ_WRITE:
+                return RecordType.P;
+            case CHILD_READ_REFERENCE:
+                return RecordType.S;
+            default:
+                return RecordType.B;
         }
     }
 
     private Page mapRecordClassToPage(RECORDCLASS recordClass) {
-        switch(recordClass) {
+        switch (recordClass) {
 
-            case METHOD_READ_ONLY: return Page.METHOD;
+            case METHOD_READ_ONLY:
+                return Page.METHOD;
             case PARENT_READ_ONLY:
             case PARENT_READ_WRITE:
-            case PARENT_READ_REFERENCE: return Page.PARENT;
+            case PARENT_READ_REFERENCE:
+                return Page.PARENT;
             case CHILD_READ_ONLY:
             case CHILD_READ_WRITE:
-            case CHILD_READ_REFERENCE: return Page.CHILD;
-            default: return Page.METHOD;
-            }
+            case CHILD_READ_REFERENCE:
+                return Page.CHILD;
+            default:
+                return Page.METHOD;
+        }
     }
 
     private RoleAccess mapRoleAccess(ROLE access) {

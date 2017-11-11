@@ -1,6 +1,8 @@
 package ch.raiffeisen.ipricer.fxdesigner.domain;
 
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class IPricerProperties {
 
     public Datatype dataType ;
@@ -107,5 +109,10 @@ public class IPricerProperties {
 
     public int getOptionListWidth() {
         return optionListWidth;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this);
     }
 }

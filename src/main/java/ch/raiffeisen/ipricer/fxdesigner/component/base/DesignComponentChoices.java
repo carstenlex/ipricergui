@@ -65,7 +65,7 @@ public abstract class DesignComponentChoices extends DesignComponent implements 
     }
 
     @Override
-    protected DesignComponent copy() {
+    public DesignComponent copy() {
         DesignComponentChoices copy = (DesignComponentChoices)super.copy();
         copy.procedureName = procedureName;
         return copy;
