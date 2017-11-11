@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 public class Parser {
 
 
+    public static final String ENCODING = "ISO-8859-1";
     private FXDesigner fxDesigner;
 
     Map<String, DesignComponent> componentByInternalName = new HashMap<>();
@@ -26,7 +27,7 @@ public class Parser {
     public Parser(FXDesigner fxDesigner, File file) {
         this.fxDesigner = fxDesigner;
         DefinitionDSL dsl = new DefinitionDSL();
-        DefinitionImpl definition = dsl.parseDefinition(file.toURI());
+        DefinitionImpl definition = dsl.parseDefinition(file.toURI(), ENCODING);
 
         readLabels(definition);
         Set<String> separators = ermittleSeparators(definition);
