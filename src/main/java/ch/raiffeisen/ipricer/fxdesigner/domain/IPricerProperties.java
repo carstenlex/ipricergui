@@ -115,4 +115,28 @@ public class IPricerProperties {
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
     }
+
+    public IPricerProperties copy() {
+        IPricerProperties cpy = new IPricerProperties();
+        cpy.gridY = gridY;
+        cpy.gridX = gridX;
+        cpy.isSeparator = isSeparator;
+        cpy.initValue = initValue;
+        cpy.strict = strict;
+        cpy.procedureNameForValues = procedureNameForValues;
+        cpy.maxLength = maxLength;
+        cpy.externalName = externalName;
+        cpy.recordType = recordType;
+        cpy.internalFieldName = internalFieldName;
+        cpy.indirectComponent = indirectComponent;
+        cpy.width = width;
+        cpy.dataType = dataType;
+        cpy.showInUnderlyingList = showInUnderlyingList;
+        cpy.showInOptionList = showInOptionList;
+        cpy.labelText = labelText;
+        cpy.roleAccess = roleAccess;
+        cpy.optionListWidth = optionListWidth;
+        cpy.underlyingListWidth = underlyingListWidth;
+        return cpy;
+    }
 }

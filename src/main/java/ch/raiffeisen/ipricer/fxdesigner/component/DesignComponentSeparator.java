@@ -12,7 +12,7 @@ public class DesignComponentSeparator extends DesignComponent {
         sep.setLabeltext(SEPARATOR_TEXT);
         sep.setRoleAccess(other.properties.roleAccess);
         sep.setWidthProperty(other.properties.width);
-        sep.properties = other.properties;
+        sep.properties = other.properties.copy();
         sep.designer = other.getDesigner();
         sep.page = other.getPage();
         return sep;

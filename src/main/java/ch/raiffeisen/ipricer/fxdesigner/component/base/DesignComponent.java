@@ -187,7 +187,7 @@ public abstract class DesignComponent extends HBox {
         component.orgTranslateY = this.orgTranslateY;
         component.orgSceneX = this.orgSceneX;
         component.orgSceneY = this.orgSceneY;
-        component.properties = this.properties;
+        component.properties = this.properties.copy();
         component.designer = this.designer;
         component.page = this.page;
         return component;

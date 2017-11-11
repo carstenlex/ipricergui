@@ -108,6 +108,7 @@ public class Parser {
                 if (maskDef.getSeparator() != null) {
                     component = DesignComponentSeparator.from(component);//Separator ist nur einmal definiert im Data-Bereich, wird aber mehrfach benutzt -> für GUI neue Component
                     component.properties.isSeparator = true;
+                    component.setPage(page);
                 }
                 component.properties.gridX = maskDef.getCol();
                 component.properties.gridY = maskDef.getRow();

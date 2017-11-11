@@ -2,6 +2,7 @@ package ch.raiffeisen.ipricer.fxdesigner;
 
 import ch.raiffeisen.ipricer.definition.DefinitionDSL;
 import ch.raiffeisen.ipricer.definition.GeneratorResponse;
+import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentSeparator;
 import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
 import ch.raiffeisen.ipricer.fxdesigner.generator.Generator;
@@ -525,6 +526,9 @@ public class FXDesigner extends Application implements Initializable {
         for (Node node : children) {
             if (node instanceof DesignComponent) {
                 designComponents.add((DesignComponent) node);
+                if (node instanceof DesignComponentSeparator){
+                    System.out.println("Separator: gridx="+((DesignComponentSeparator) node).properties.gridX+"; gridY="+((DesignComponentSeparator) node).properties.gridY);
+                }
             }
         }
         return designComponents;
