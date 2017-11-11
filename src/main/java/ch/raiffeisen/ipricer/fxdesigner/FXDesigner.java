@@ -268,6 +268,7 @@ public class FXDesigner extends Application implements Initializable {
         Parser parser = new Parser(this, file);
     }
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         propertyDatatype.setItems(FXCollections.observableArrayList(Datatype.values()));
@@ -354,18 +355,7 @@ public class FXDesigner extends Application implements Initializable {
         grid.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                double height = grid.getHeight();
-                double width = grid.getWidth();
-                int rows = grid.getRowConstraints().size();
-                int cols = grid.getColumnConstraints().size();
-
-                double rowHeight = height / rows;
-                double colWidth = width / cols;
-                System.out.println("rowHeight=" + rowHeight + "; colWidth=" + colWidth);
-
-                Point zelle = new Point();
-                zelle.x = (int) Math.floor(event.getX() / colWidth);
-                zelle.y = (int) Math.floor(event.getY() / rowHeight);
+                Point zelle = getGridZelleFromMouseclick(grid,event);
 
                 Node componentInZelle = getNodeFromGridPane(grid, zelle.x, zelle.y);
                 if (componentInZelle != null) {
@@ -398,7 +388,24 @@ public class FXDesigner extends Application implements Initializable {
         });
     }
 
+    private Point getGridZelleFromMouseclick(GridPane grid, MouseEvent event) {
+        double height = grid.getHeight();
+        double width = grid.getWidth();
+        int rows = grid.getRowConstraints().size();
+        int cols = grid.getColumnConstraints().size();
 
+        double rowHeight = height / rows;
+        double colWidth = width / cols;
+        System.out.println("rowHeight=" + rowHeight + "; colWidth=" + colWidth);
+
+        Point zelle = new Point();
+        zelle.x = (int) Math.floor(event.getX() / colWidth);
+        zelle.y = (int) Math.floor(event.getY() / rowHeight);
+
+
+
+        return zelle;
+    }
 
 
     public void initializeGrid(GridPane grid, GridGroesse gridGroesse) {
@@ -414,19 +421,23 @@ public class FXDesigner extends Application implements Initializable {
     }
 
     private void addRowConstraint(GridPane grid,GridGroesse gridGroesse) {
+        double weight = 100 / gridGroesse.rows;
         RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setVgrow(Priority.SOMETIMES);
-        rowConstraints.setMinHeight(10.0);
-        rowConstraints.setPrefHeight(grid.getHeight() / gridGroesse.rows);
+        rowConstraints.setVgrow(Priority.NEVER);
+        rowConstraints.setPercentHeight(weight);
+//        rowConstraints.setMinHeight(10.0);
+//        rowConstraints.setPrefHeight(pageTabs.getHeight() / gridGroesse.rows);
         rowConstraints.setValignment(VPos.CENTER);
         grid.getRowConstraints().add(rowConstraints);
     }
 
     private void addColumnConstraint(GridPane grid, GridGroesse gridGroesse) {
+        double weight = 100 / gridGroesse.cols;
         ColumnConstraints colConstraints = new ColumnConstraints();
-        colConstraints.setHgrow(Priority.SOMETIMES);
-        colConstraints.setMinWidth(10.0);
-        colConstraints.setPrefWidth(grid.getWidth() / gridGroesse.cols);
+        colConstraints.setHgrow(Priority.NEVER);
+        colConstraints.setPercentWidth(weight);
+//        colConstraints.setMinWidth(10.0);
+//        colConstraints.setPrefWidth(pageTabs.getWidth() / gridGroesse.cols);
         colConstraints.setHalignment(HPos.CENTER);
         grid.getColumnConstraints().add(colConstraints);
     }

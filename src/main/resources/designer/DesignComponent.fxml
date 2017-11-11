@@ -5,5 +5,5 @@
 <?import javafx.scene.layout.HBox?>
 <fx:root type="HBox" xmlns:fx="http://javafx.com/fxml" onMousePressed="#mousePressed" onMouseDragged="#mouseDragged"  onMouseReleased="#mouseReleased"  onContextMenuRequested="#contextMenuRequested" fillHeight="true" >
     <Label fx:id="labelText" text="Label"/>
-    <TextField fx:id="textField" maxWidth="50" disable="true"/>
+    <TextField fx:id="textField" maxWidth="15" disable="true"/>
 </fx:root>

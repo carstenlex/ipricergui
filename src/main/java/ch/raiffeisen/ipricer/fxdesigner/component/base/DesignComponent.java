@@ -32,6 +32,8 @@ public abstract class DesignComponent extends HBox {
     protected FXDesigner designer;
     protected Page page;
 
+    private static final int SCALEFACTOR = 3; //die width in den MaskSections ist in "Zeichen" angegeben, wir wollen eine Pixelbreite daraus rechnen
+
 
     public DesignComponent() {
         try {
@@ -68,7 +70,7 @@ public abstract class DesignComponent extends HBox {
         properties.isSeparator = false;
         properties.initValue = "";
         properties.strict = true;
-        properties.width = 50;
+        properties.width = 15;
         properties.maxLength = 30;
         properties.procedureNameForValues = "";
         properties.recordType = RecordType.D;
@@ -222,8 +224,8 @@ public abstract class DesignComponent extends HBox {
     }
 
     public void setWidthProperty(int widthProperty) {
-        this.textField.setPrefWidth(widthProperty * 8);
-        this.textField.setMinWidth(widthProperty * 8);
+        this.textField.setPrefWidth(widthProperty * SCALEFACTOR);
+        this.textField.setMinWidth(widthProperty * SCALEFACTOR);
         this.properties.width = widthProperty;
     }
 

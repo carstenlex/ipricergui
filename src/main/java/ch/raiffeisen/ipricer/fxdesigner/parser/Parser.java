@@ -96,6 +96,8 @@ public class Parser {
         GridGroesse gg = new GridGroesse();
         gg.cols = maskDefinitions.stream().map(def -> def.getCol()).reduce(Integer::max).orElse(GridGroesse.DEFAULT_COLS);
         gg.rows = maskDefinitions.stream().map(def -> def.getRow()).reduce(Integer::max).orElse(GridGroesse.DEFAULT_ROWS);
+        gg.cols ++;
+        gg.rows ++;
         return gg;
 
     }
