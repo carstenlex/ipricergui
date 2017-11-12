@@ -34,19 +34,24 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.apache.commons.io.FileUtils;
 import org.eclipse.xtext.validation.Issue;
 
 
 import java.awt.Point;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.FileStore;
 import java.util.*;
 
 import static ch.raiffeisen.ipricer.fxdesigner.domain.Page.METHOD;
 
 public class FXDesigner extends Application implements Initializable {
 
+    public static final String ENCODING = "ISO-8859-1";
     @FXML
     public AnchorPane appPane;
 
@@ -112,7 +117,17 @@ public class FXDesigner extends Application implements Initializable {
     public Button propertiesUebernehmen;
 
     @FXML
-    public Button addColumn;
+    public Button addMethodgridColumn;
+    @FXML
+    public Button addMethodgridRow;
+    @FXML
+    public Button addChildgridRow;
+    @FXML
+    public Button addChildgridColumn;
+    @FXML
+    public Button addParentgridColumn;
+    @FXML
+    public Button addParentgridRow;
 
     /*
     Menu
@@ -237,7 +252,7 @@ public class FXDesigner extends Application implements Initializable {
     public void saveDefinitionFile(ActionEvent actionEvent) {
         try {
             if (definitionFileSave == null) {
-                setDefinitionFileSave(fileChooser.showSaveDialog(null));
+                setDefinitionFile(fileChooser.showSaveDialog(null));
             }
 
             generator.generateDefinitionFile(this);
@@ -249,7 +264,7 @@ public class FXDesigner extends Application implements Initializable {
     public void generateDefinitionFile(ActionEvent actionEvent) {
 
         try {
-            setDefinitionFileSave(fileChooser.showSaveDialog(null));
+            setDefinitionFile(fileChooser.showSaveDialog(null));
 
             generator.generateDefinitionFile(this);
         } catch (GeneratorException e) {
@@ -257,7 +272,7 @@ public class FXDesigner extends Application implements Initializable {
         }
     }
 
-    public void setDefinitionFileSave(File file) {
+    public void setDefinitionFile(File file) {
         definitionFileSave = file;
         Stage window = (Stage) appPane.getScene().getWindow();
         window.setTitle("GUIDesigner - Target Definitionfile: " + file.getAbsolutePath());
@@ -266,6 +281,7 @@ public class FXDesigner extends Application implements Initializable {
     public void openDefinitionFile(ActionEvent actionEvent) {
         File file = fileChooser.showOpenDialog(null);
         Parser parser = new Parser(this, file);
+        setDefinitionFile(file);
     }
 
 
@@ -309,6 +325,16 @@ public class FXDesigner extends Application implements Initializable {
         gridFromPage.put(Page.CHILD, childGrid);
 
         Image ok = new Image(getClass().getResourceAsStream("/img/ok.png"), 30, 30, true, true);
+        Image addCol =new Image(getClass().getResourceAsStream("/img/addColumn.png"), 20, 20, true, true);
+        Image addRow =new Image(getClass().getResourceAsStream("/img/addRow.png"), 20, 20, true, true);
+
+        addMethodgridColumn.setGraphic(new ImageView(addCol));
+        addParentgridColumn.setGraphic(new ImageView(addCol));
+        addChildgridColumn.setGraphic(new ImageView(addCol));
+        addMethodgridRow.setGraphic(new ImageView(addRow));
+        addParentgridRow.setGraphic(new ImageView(addRow));
+        addChildgridRow.setGraphic(new ImageView(addRow));
+
         propertiesUebernehmen.setGraphic(new ImageView(ok));
         propertiesUebernehmen.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -411,17 +437,17 @@ public class FXDesigner extends Application implements Initializable {
     public void initializeGrid(GridPane grid, GridGroesse gridGroesse) {
 
         for (int i = 0; i < gridGroesse.cols; i++) {
-            addColumnConstraint(grid, gridGroesse);
+            addColumnConstraint(grid);
         }
 
         for (int i = 0; i < gridGroesse.rows; i++) {
-            addRowConstraint(grid, gridGroesse);
+            addRowConstraint(grid);
         }
 
     }
 
-    private void addRowConstraint(GridPane grid,GridGroesse gridGroesse) {
-        double weight = 100 / gridGroesse.rows;
+    private void addRowConstraint(GridPane grid) {
+        double weight = 100 ;
         RowConstraints rowConstraints = new RowConstraints();
         rowConstraints.setVgrow(Priority.NEVER);
         rowConstraints.setPercentHeight(weight);
@@ -431,8 +457,8 @@ public class FXDesigner extends Application implements Initializable {
         grid.getRowConstraints().add(rowConstraints);
     }
 
-    private void addColumnConstraint(GridPane grid, GridGroesse gridGroesse) {
-        double weight = 100 / gridGroesse.cols;
+    private void addColumnConstraint(GridPane grid) {
+        double weight = 100;
         ColumnConstraints colConstraints = new ColumnConstraints();
         colConstraints.setHgrow(Priority.NEVER);
         colConstraints.setPercentWidth(weight);
@@ -547,7 +573,7 @@ public class FXDesigner extends Application implements Initializable {
 
     public void generateJava(ActionEvent actionEvent) {
         DefinitionDSL dsl = new DefinitionDSL();
-        GeneratorResponse generatorResponse = dsl.generateJavaFromDefinition(definitionFileSave.toURI());
+        GeneratorResponse generatorResponse = dsl.generateJavaFromDefinition(definitionFileSave.toURI(),ENCODING);
 
         System.out.println("Issues");
         for (Issue issue : generatorResponse.getIssues()) {
@@ -556,10 +582,21 @@ public class FXDesigner extends Application implements Initializable {
 
         System.out.println("**************************************Files");
         for (Map.Entry<String, CharSequence> entry : generatorResponse.getGeneratedFiles().entrySet()) {
-            System.out.println("**************************** " + entry.getKey());
+            System.out.println("**************************** " + entry.getKey() +"====>");
             System.out.println(entry.getValue());
 
+            String default_output_path = entry.getKey().replace("DEFAULT_OUTPUT", "D:/temp/xtext");
+
+            File file = new File(default_output_path);
+            try {
+                FileUtils.write(file, entry.getValue(),Charset.forName(ENCODING),false);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
+
+
 
 
     }
@@ -580,5 +617,29 @@ public class FXDesigner extends Application implements Initializable {
         grid.getColumnConstraints().clear();
 
         initializeGrid(grid, gridGroesse);
+    }
+
+    public void addColumnOnMethodGrid(ActionEvent actionEvent) {
+        addColumnConstraint(methodGrid);
+    }
+
+    public void addRowOnMethodGrid(ActionEvent actionEvent) {
+        addRowConstraint(methodGrid);
+    }
+
+    public void addColumnOnParentGrid(ActionEvent actionEvent) {
+        addColumnConstraint(parentGrid);
+    }
+
+    public void addRowOnParentGrid(ActionEvent actionEvent) {
+        addRowConstraint(parentGrid);
+    }
+
+    public void addColumnOnChildGrid(ActionEvent actionEvent) {
+        addColumnConstraint(childGrid);
+    }
+
+    public void addRowOnChildGrid(ActionEvent actionEvent) {
+        addRowConstraint(childGrid);
     }
 }
