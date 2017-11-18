@@ -8,6 +8,7 @@ import ch.raiffeisen.ipricer.fxdesigner.component.*;
 import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
 import ch.raiffeisen.ipricer.fxdesigner.generator.MethodProperties;
+import ch.raiffeisen.ipricer.fxdesigner.ui.GridHelper;
 import javafx.scene.layout.GridPane;
 import org.eclipse.emf.common.util.EList;
 
@@ -63,7 +64,7 @@ public class Parser {
             return;
         }
         GridGroesse gridGroesse = ermittleGridGroesse(optionMaskSection.getOptionMaskDefinitions());
-        fxDesigner.reInitGrid(fxDesigner.childGrid, gridGroesse);
+        GridHelper.reInitGrid(fxDesigner.childGrid, gridGroesse);
         handleMaskSection(optionMaskSection.getOptionMaskDefinitions(), Page.CHILD);
     }
 
@@ -73,7 +74,7 @@ public class Parser {
         }
 
         GridGroesse gridGroesse = ermittleGridGroesse(underlyingMaskSection.getUnderlyingMaskDefinitions());
-        fxDesigner.reInitGrid(fxDesigner.parentGrid, gridGroesse);
+        GridHelper.reInitGrid(fxDesigner.parentGrid, gridGroesse);
         handleMaskSection(underlyingMaskSection.getUnderlyingMaskDefinitions(), Page.PARENT);
 
     }
@@ -83,7 +84,7 @@ public class Parser {
             return;
         }
         GridGroesse gridGroesse = ermittleGridGroesse(typeMaskSection.getTypeMaskDefinitions());
-        fxDesigner.reInitGrid(fxDesigner.methodGrid, gridGroesse);
+        GridHelper.reInitGrid(fxDesigner.methodGrid, gridGroesse);
         handleMaskSection(typeMaskSection.getTypeMaskDefinitions(), Page.METHOD);
     }
 

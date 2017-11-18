@@ -1,25 +1,21 @@
 package ch.raiffeisen.ipricer.fxdesigner;
 
-import ch.raiffeisen.ipricer.definition.DefinitionDSL;
-import ch.raiffeisen.ipricer.definition.GeneratorResponse;
-import ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentSeparator;
 import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
-import ch.raiffeisen.ipricer.fxdesigner.generator.Generator;
+import ch.raiffeisen.ipricer.fxdesigner.generator.GeneratorDefinitionFile;
 import ch.raiffeisen.ipricer.fxdesigner.generator.GeneratorException;
+import ch.raiffeisen.ipricer.fxdesigner.generator.GeneratorJavaFile;
 import ch.raiffeisen.ipricer.fxdesigner.generator.MethodProperties;
+import ch.raiffeisen.ipricer.fxdesigner.ui.GridHelper;
 import ch.raiffeisen.ipricer.fxdesigner.parser.Parser;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -34,24 +30,22 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.commons.io.FileUtils;
-import org.eclipse.xtext.validation.Issue;
 
 
 import java.awt.Point;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.charset.Charset;
-import java.nio.file.FileStore;
 import java.util.*;
 
 import static ch.raiffeisen.ipricer.fxdesigner.domain.Page.METHOD;
+import static ch.raiffeisen.ipricer.fxdesigner.ui.GridHelper.addColumnConstraint;
+import static ch.raiffeisen.ipricer.fxdesigner.ui.GridHelper.addRowConstraint;
+import static ch.raiffeisen.ipricer.fxdesigner.ui.GridHelper.initializeGrid;
 
 public class FXDesigner extends Application implements Initializable {
 
-    public static final String ENCODING = "ISO-8859-1";
+
     @FXML
     public AnchorPane appPane;
 
@@ -225,7 +219,7 @@ public class FXDesigner extends Application implements Initializable {
 
     public HashMap<Page, GridPane> gridFromPage = new HashMap<>();
 
-    Generator generator = new Generator();
+    GeneratorDefinitionFile generatorDefinitionFile = new GeneratorDefinitionFile();
 
     public static void main(String[] args) {
         launch(args);
@@ -255,7 +249,7 @@ public class FXDesigner extends Application implements Initializable {
                 setDefinitionFile(fileChooser.showSaveDialog(null));
             }
 
-            generator.generateDefinitionFile(this);
+            generatorDefinitionFile.generateDefinitionFile(this);
         } catch (GeneratorException e) {
             System.out.println(e.getErrorReport().toString());
         }
@@ -266,7 +260,7 @@ public class FXDesigner extends Application implements Initializable {
         try {
             setDefinitionFile(fileChooser.showSaveDialog(null));
 
-            generator.generateDefinitionFile(this);
+            generatorDefinitionFile.generateDefinitionFile(this);
         } catch (GeneratorException e) {
             System.out.println(e.getErrorReport().toString());
         }
@@ -336,31 +330,28 @@ public class FXDesigner extends Application implements Initializable {
         addChildgridRow.setGraphic(new ImageView(addRow));
 
         propertiesUebernehmen.setGraphic(new ImageView(ok));
-        propertiesUebernehmen.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                IPricerProperties p = selectedDesignComponent.properties;
-                p.dataType = propertyDatatype.getValue();
-                p.internalFieldName = propertyInternalFieldname.getText();
-                p.externalName = propertyExternalName.getText();
-                selectedDesignComponent.setLabeltext(propertyLabeltext.getText());
+        propertiesUebernehmen.setOnAction(event -> {
+            IPricerProperties p = selectedDesignComponent.properties;
+            p.dataType = propertyDatatype.getValue();
+            p.internalFieldName = propertyInternalFieldname.getText();
+            p.externalName = propertyExternalName.getText();
+            selectedDesignComponent.setLabeltext(propertyLabeltext.getText());
 
-                selectedDesignComponent.setRoleAccess(propertyRoleAccess.getValue());
-                p.recordType = propertyRecordType.getValue();
-                p.maxLength = Integer.parseInt(propertyMaxLength.getText());
-                selectedDesignComponent.setWidthProperty(Integer.parseInt(propertyWidth.getText()));
-                p.procedureNameForValues = propertyProcedureName.getText();
-                p.strict = propertyStrict.isSelected();
-                p.initValue = propertyInitValue.getText();
-                p.isSeparator = propertySeparator.isSelected();
-                p.showInUnderlyingList = propertyShowInUnderlyingList.isSelected();
-                p.underlyingListWidth = Integer.parseInt(propertyUnderlyingListWidth.getText());
-                p.showInOptionList = propertyShowInOptionList.isSelected();
-                p.optionListWidth = Integer.parseInt(propertyOptionListWidth.getText());
+            selectedDesignComponent.setRoleAccess(propertyRoleAccess.getValue());
+            p.recordType = propertyRecordType.getValue();
+            p.maxLength = Integer.parseInt(propertyMaxLength.getText());
+            selectedDesignComponent.setWidthProperty(Integer.parseInt(propertyWidth.getText()));
+            p.procedureNameForValues = propertyProcedureName.getText();
+            p.strict = propertyStrict.isSelected();
+            p.initValue = propertyInitValue.getText();
+            p.isSeparator = propertySeparator.isSelected();
+            p.showInUnderlyingList = propertyShowInUnderlyingList.isSelected();
+            p.underlyingListWidth = Integer.parseInt(propertyUnderlyingListWidth.getText());
+            p.showInOptionList = propertyShowInOptionList.isSelected();
+            p.optionListWidth = Integer.parseInt(propertyOptionListWidth.getText());
 //                p.gridX = Integer.parseInt(propertyGridX.getText());
 //                p.gridY = Integer.parseInt(propertyGridY.getText());
 
-            }
         });
 
         initTestData();
@@ -381,9 +372,9 @@ public class FXDesigner extends Application implements Initializable {
         grid.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Point zelle = getGridZelleFromMouseclick(grid,event);
+                Point zelle = GridHelper.getGridZelleFromMouseclick(grid,event);
 
-                Node componentInZelle = getNodeFromGridPane(grid, zelle.x, zelle.y);
+                Node componentInZelle = GridHelper.getNodeFromGridPane(grid, zelle.x, zelle.y);
                 if (componentInZelle != null) {
                     System.out.println("Zelle bereits besetzt -> keine neue Komponente");
                     return;
@@ -414,70 +405,12 @@ public class FXDesigner extends Application implements Initializable {
         });
     }
 
-    private Point getGridZelleFromMouseclick(GridPane grid, MouseEvent event) {
-        double height = grid.getHeight();
-        double width = grid.getWidth();
-        int rows = grid.getRowConstraints().size();
-        int cols = grid.getColumnConstraints().size();
-
-        double rowHeight = height / rows;
-        double colWidth = width / cols;
-        System.out.println("rowHeight=" + rowHeight + "; colWidth=" + colWidth);
-
-        Point zelle = new Point();
-        zelle.x = (int) Math.floor(event.getX() / colWidth);
-        zelle.y = (int) Math.floor(event.getY() / rowHeight);
 
 
 
-        return zelle;
-    }
 
 
-    public void initializeGrid(GridPane grid, GridGroesse gridGroesse) {
 
-        for (int i = 0; i < gridGroesse.cols; i++) {
-            addColumnConstraint(grid);
-        }
-
-        for (int i = 0; i < gridGroesse.rows; i++) {
-            addRowConstraint(grid);
-        }
-
-    }
-
-    private void addRowConstraint(GridPane grid) {
-        double weight = 100 ;
-        RowConstraints rowConstraints = new RowConstraints();
-        rowConstraints.setVgrow(Priority.NEVER);
-        rowConstraints.setPercentHeight(weight);
-//        rowConstraints.setMinHeight(10.0);
-//        rowConstraints.setPrefHeight(pageTabs.getHeight() / gridGroesse.rows);
-        rowConstraints.setValignment(VPos.CENTER);
-        grid.getRowConstraints().add(rowConstraints);
-    }
-
-    private void addColumnConstraint(GridPane grid) {
-        double weight = 100;
-        ColumnConstraints colConstraints = new ColumnConstraints();
-        colConstraints.setHgrow(Priority.NEVER);
-        colConstraints.setPercentWidth(weight);
-//        colConstraints.setMinWidth(10.0);
-//        colConstraints.setPrefWidth(pageTabs.getWidth() / gridGroesse.cols);
-        colConstraints.setHalignment(HPos.CENTER);
-        grid.getColumnConstraints().add(colConstraints);
-    }
-
-    private Node getNodeFromGridPane(GridPane gridPane, int col, int row) {
-        for (Node node : gridPane.getChildren()) {
-            if (node instanceof Pane) {
-                if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                    return node;
-                }
-            }
-        }
-        return null;
-    }
 
 
     public void showProperties(IPricerProperties properties, Page page) {
@@ -508,97 +441,11 @@ public class FXDesigner extends Application implements Initializable {
         showProperties(selectedDesignComponent.properties, selectedDesignComponent.getPage());
     }
 
-    public ContextMenu createContextMenu(DesignComponent contextComponent) {
-        Page currentPage = contextComponent.getPage();
 
-        ContextMenu cm = new ContextMenu();
-        MenuItem moveToMethod = new MenuItem("verschiebe auf Method");
-        MenuItem moveToParent = new MenuItem("verschiebe auf Parent");
-        MenuItem moveToChild = new MenuItem("verschiebe auf Child");
-        SeparatorMenuItem separator = new SeparatorMenuItem();
-        MenuItem deleteComponent = new MenuItem("Delete");
-
-        deleteComponent.setOnAction(e ->
-                        gridFromPage.get(currentPage).getChildren().remove(contextComponent)
-                                   );
-        moveToMethod.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.METHOD));
-        moveToParent.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.PARENT));
-        moveToChild.setOnAction(contextMenuMoveToOtherPage(contextComponent, currentPage, Page.CHILD));
-
-        if (METHOD == currentPage) {
-            cm.getItems().addAll(moveToParent, moveToChild, separator, deleteComponent);
-        }
-        if (Page.PARENT == currentPage) {
-            cm.getItems().addAll(moveToMethod, moveToChild, separator, deleteComponent);
-        }
-        if (Page.CHILD == currentPage) {
-            cm.getItems().addAll(moveToMethod, moveToParent, separator, deleteComponent);
-        }
-
-        return cm;
-    }
-
-    private EventHandler<ActionEvent> contextMenuMoveToOtherPage(DesignComponent contextComponent, Page currentPage, Page newPage) {
-        return e -> {
-            gridFromPage.get(currentPage).getChildren().remove(contextComponent);
-
-            contextComponent.setPage(newPage);
-            showPropertiesForSelectedComponent();
-            gridFromPage.get(newPage).add(contextComponent, contextComponent.properties.gridX, contextComponent.properties.gridY);
-        };
-    }
-
-    public java.util.List<DesignComponent> getAllDesignComponents() {
-
-        List<DesignComponent> designComponents = new ArrayList<>();
-        designComponents.addAll(getDesignComponents(methodGrid));
-        designComponents.addAll(getDesignComponents(parentGrid));
-        designComponents.addAll(getDesignComponents(childGrid));
-        return designComponents;
-    }
-
-    private List<DesignComponent> getDesignComponents(GridPane grid) {
-        ObservableList<Node> children = grid.getChildren();
-        List<DesignComponent> designComponents = new ArrayList<>();
-        for (Node node : children) {
-            if (node instanceof DesignComponent) {
-                designComponents.add((DesignComponent) node);
-                if (node instanceof DesignComponentSeparator){
-                    System.out.println("Separator: gridx="+((DesignComponentSeparator) node).properties.gridX+"; gridY="+((DesignComponentSeparator) node).properties.gridY);
-                }
-            }
-        }
-        return designComponents;
-    }
 
     public void generateJava(ActionEvent actionEvent) {
-        DefinitionDSL dsl = new DefinitionDSL();
-        GeneratorResponse generatorResponse = dsl.generateJavaFromDefinition(definitionFileSave.toURI(),ENCODING);
-
-        System.out.println("Issues");
-        for (Issue issue : generatorResponse.getIssues()) {
-            System.out.println(issue);
-        }
-
-        System.out.println("**************************************Files");
-        for (Map.Entry<String, CharSequence> entry : generatorResponse.getGeneratedFiles().entrySet()) {
-            System.out.println("**************************** " + entry.getKey() +"====>");
-            System.out.println(entry.getValue());
-
-            String default_output_path = entry.getKey().replace("DEFAULT_OUTPUT", "D:/temp/xtext");
-
-            File file = new File(default_output_path);
-            try {
-                FileUtils.write(file, entry.getValue(),Charset.forName(ENCODING),false);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-
-
-
-
+        GeneratorJavaFile gjf = new GeneratorJavaFile();
+                gjf.write(definitionFileSave);
     }
 
     public void setMethodProperties(MethodProperties mp) {
@@ -609,15 +456,7 @@ public class FXDesigner extends Application implements Initializable {
     }
 
 
-    public void reInitGrid(GridPane grid, GridGroesse gridGroesse) {
-        Node nodeWithGridlines = grid.getChildren().get(0);
-        grid.getChildren().clear();
-        grid.getChildren().add(0,nodeWithGridlines);
-        grid.getRowConstraints().clear();
-        grid.getColumnConstraints().clear();
 
-        initializeGrid(grid, gridGroesse);
-    }
 
     public void addColumnOnMethodGrid(ActionEvent actionEvent) {
         addColumnConstraint(methodGrid);
@@ -641,5 +480,9 @@ public class FXDesigner extends Application implements Initializable {
 
     public void addRowOnChildGrid(ActionEvent actionEvent) {
         addRowConstraint(childGrid);
+    }
+
+    public List<DesignComponent> getAllDesignComponents() {
+        return GridHelper.getAllDesignComponents(methodGrid,parentGrid,childGrid);
     }
 }

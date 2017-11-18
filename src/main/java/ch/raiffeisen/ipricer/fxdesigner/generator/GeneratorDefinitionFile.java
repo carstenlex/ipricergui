@@ -16,14 +16,14 @@ import java.util.*;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.*;
 
-public class Generator {
+public class GeneratorDefinitionFile {
 
     public static final String KEIN_WERT = "kein Wert";
     public static final String KOMPONENTE = "komponente";
     Configuration cfg;
 
 
-    public Generator(){
+    public GeneratorDefinitionFile(){
         cfg = new Configuration(Configuration.VERSION_2_3_27);
 
 // Specify the source where the template files come from. Here I set a

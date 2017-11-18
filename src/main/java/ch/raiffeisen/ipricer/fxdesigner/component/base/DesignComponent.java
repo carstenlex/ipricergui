@@ -2,6 +2,7 @@ package ch.raiffeisen.ipricer.fxdesigner.component.base;
 
 import ch.raiffeisen.ipricer.fxdesigner.FXDesigner;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
+import ch.raiffeisen.ipricer.fxdesigner.ui.ContextMenuHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -98,7 +99,8 @@ public abstract class DesignComponent extends HBox {
 
     //FXML
     public void contextMenuRequested(ContextMenuEvent event) {
-        designer.createContextMenu(this).show(this, event.getScreenX(), event.getScreenY());
+        ContextMenuHelper cmh = new ContextMenuHelper(designer);
+        cmh.createContextMenu(this).show(this, event.getScreenX(), event.getScreenY());
     }
 
     //FXML
