@@ -29,7 +29,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
+import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 
 import java.awt.Point;
@@ -37,6 +39,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 import static ch.raiffeisen.ipricer.fxdesigner.domain.Page.METHOD;
 import static ch.raiffeisen.ipricer.fxdesigner.ui.GridHelper.addColumnConstraint;
@@ -354,18 +358,8 @@ public class FXDesigner extends Application implements Initializable {
 
         });
 
-        initTestData();
 
     }
-
-    private void initTestData() {
-        methodLabel.setText("APLabel");
-        methodName.setText("APname");
-        parentLabel.setText("APparent");
-        childLabel.setText("APchild");
-
-    }
-
 
     void addMouseHandler(GridPane grid, ToggleGroup selectOne) {
         FXDesigner ref = this;
@@ -484,5 +478,57 @@ public class FXDesigner extends Application implements Initializable {
 
     public List<DesignComponent> getAllDesignComponents() {
         return GridHelper.getAllDesignComponents(methodGrid,parentGrid,childGrid);
+    }
+
+    public void generateFIDSnippet(ActionEvent actionEvent) {
+
+        Window window = appPane.getScene().getWindow();
+        Popup popup = new Popup();
+        popup.setX(300);
+        popup.setY(200);
+
+
+        VBox vbox = new VBox();
+        HBox hbox = new HBox();
+        Label label = new Label("Start FID id:");
+        TextField startingFidInput = new TextField();
+        Button generate = new Button("Generate");
+        Button schliessen = new Button("schliessen");
+        schliessen.setOnAction(event -> popup.hide());
+        TextArea generatedFIDs = new TextArea();
+        generatedFIDs.setPrefColumnCount(80);
+        generatedFIDs.setPrefRowCount(20);
+
+        generate.setOnAction(event -> {
+            generatedFIDs.setText("");
+            AtomicInteger startingFid = new AtomicInteger();
+            try {
+                startingFid.set( Integer.parseInt(startingFidInput.getText()));
+            } catch (NumberFormatException e) {
+                startingFid.set(0);
+            }
+            String collect = GridHelper.getAllDesignComponents(methodGrid, parentGrid, childGrid).stream()
+                    .map(designComponent -> designComponent.properties.externalName)
+                    .sorted()
+                    .map(externalName -> externalName + "  " + (startingFid.getAndIncrement()) + " ALPHANUMERIC")
+                    .collect(Collectors.joining("\n"));
+
+
+            generatedFIDs.setText(collect);
+        });
+
+        hbox.getChildren().add(label);
+        hbox.getChildren().add(startingFidInput);
+        hbox.getChildren().add(generate);
+
+        vbox.getChildren().add(hbox);
+        vbox.getChildren().add(generatedFIDs);
+        vbox.getChildren().add(schliessen);
+        vbox.setStyle("-fx-background-color: darkgray; -fx-padding: 10; -fx-border-width: 2px; -fx-border-color: black");
+        popup.getContent().add(vbox);
+
+
+        popup.show(window);
+
     }
 }

@@ -23,6 +23,7 @@
                                           text="Save Definition"/>
                                 <SeparatorMenuItem />
                                 <MenuItem fx:id="menuGenerateJava" onAction="#generateJava" text="Generate Java Klassen"/>
+                                <MenuItem fx:id="menuGenerateFIDSnippet" onAction="#generateFIDSnippet" text="Generate FID Snippet"/>
                                 <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#closeGUIDesigner"
                                           text="Close"/>
                             </items>
