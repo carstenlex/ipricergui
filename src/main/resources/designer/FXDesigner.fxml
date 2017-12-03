@@ -1,35 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.input.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<AnchorPane prefHeight="800.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ch.raiffeisen.ipricer.fxdesigner.FXDesigner" fx:id="appPane">
+
+<AnchorPane fx:id="appPane" prefHeight="800.0" prefWidth="1500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ch.raiffeisen.ipricer.fxdesigner.FXDesigner">
     <children>
-        <VBox prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-              AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <VBox prefHeight="800.0" prefWidth="1200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <MenuBar>
                     <menus>
                         <Menu text="File">
                             <items>
-                                <MenuItem fx:id="menuOpen" mnemonicParsing="false" onAction="#openDefinitionFile"
-                                          text="Open Definition"/>
-                                <MenuItem fx:id="menuGenerate" mnemonicParsing="false"
-                                          onAction="#generateDefinitionFile" text="Save Definition As ..."/>
-                                <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#saveDefinitionFile"
-                                          text="Save Definition"/>
+                                <MenuItem fx:id="menuOpen" mnemonicParsing="false" onAction="#openDefinitionFile" text="Open Definition" />
+                                <MenuItem fx:id="menuGenerate" mnemonicParsing="false" onAction="#generateDefinitionFile" text="Save Definition As ..." />
+                                <MenuItem fx:id="menuSave" mnemonicParsing="false" onAction="#saveDefinitionFile" text="Save Definition" />
                                 <SeparatorMenuItem />
-                                <MenuItem fx:id="menuGenerateJava" onAction="#generateJava" text="Generate Java Klassen"/>
-                                <MenuItem fx:id="menuGenerateFIDSnippet" onAction="#generateFIDSnippet" text="Generate FID Snippet"/>
-                                <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#closeGUIDesigner"
-                                          text="Close"/>
+                                <MenuItem fx:id="menuGenerateJava" onAction="#generateJava" text="Generate Java Klassen" />
+                                <MenuItem fx:id="menuGenerateFIDSnippet" onAction="#generateFIDSnippet" text="Generate FID Snippet" />
+                                <MenuItem fx:id="menuClose" mnemonicParsing="false" onAction="#closeGUIDesigner" text="Close" />
                             </items>
                             <accelerator>
-                                <KeyCodeCombination alt="DOWN" code="F" control="UP" meta="UP" shift="UP"
-                                                    shortcut="UP"/>
+                                <KeyCodeCombination alt="DOWN" code="F" control="UP" meta="UP" shift="UP" shortcut="UP" />
                             </accelerator>
                         </Menu>
 
@@ -39,101 +37,79 @@
                     <items>
                         <VBox prefHeight="200.0" prefWidth="100.0">
                             <children>
-                                <Label text="Methode"/>
-                                <TextField fx:id="methodName"/>
-                                <Label text="Methode Label"/>
-                                <TextField fx:id="methodLabel"/>
-                                <Label text="Parent Label"/>
-                                <TextField fx:id="parentLabel"/>
-                                <Label text="Child Label"/>
-                                <TextField fx:id="childLabel"/>
-                                <Button fx:id="generateDefinition" text="Generate Def"
-                                        onAction="#generateDefinitionFile"/>
-                                <Button fx:id="saveDefinition" text="Save Def" onAction="#saveDefinitionFile"/>
+
+                                <Label text="Methode" />
+                                <TextField fx:id="methodName" />
+                                <Label text="Methode Label" />
+                                <TextField fx:id="methodLabel" />
+                                <Label text="Parent Label" />
+                                <TextField fx:id="parentLabel" />
+                                <Label text="Child Label" />
+                                <TextField fx:id="childLabel" />
+                                <Button fx:id="generateDefinition" onAction="#generateDefinitionFile" text="Generate Def" />
+                                <Button fx:id="saveDefinition" onAction="#saveDefinitionFile" text="Save Def" />
+
                                 <VBox prefHeight="604.0" prefWidth="117.0" VBox.vgrow="ALWAYS">
                                     <children>
-                                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0"
-                                               prefWidth="224.0" text="Komponenten" textAlignment="CENTER"
-                                               VBox.vgrow="ALWAYS">
+                                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="55.0" prefWidth="224.0" text="Komponenten" textAlignment="CENTER" VBox.vgrow="ALWAYS">
                                             <font>
-                                                <Font size="28.0"/>
+                                                <Font size="28.0" />
                                             </font>
                                         </Label>
-                                        <RadioButton mnemonicParsing="false" text="Ja/Nein Box"
-                                                     fx:id="selectComponentYesNo"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentYesNo">
+                                        <RadioButton fx:id="selectComponentYesNo" mnemonicParsing="false" text="Ja/Nein Box" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentYesNo">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Rundungsregeln"
-                                                     fx:id="selectComponentRundungsregel"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentRundungsregel">
+                                        <RadioButton fx:id="selectComponentRundungsregel" mnemonicParsing="false" text="Rundungsregeln" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentRundungsregel">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
 
-                                        <RadioButton mnemonicParsing="false" text="AccessControl"
-                                                     fx:id="selectComponentAllUsersAndGroups"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentAllUsersAndGroups">
+                                        <RadioButton fx:id="selectComponentAllUsersAndGroups" mnemonicParsing="false" text="AccessControl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentAllUsersAndGroups">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Ja Box" fx:id="selectComponentJa"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentJa">
+                                        <RadioButton fx:id="selectComponentJa" mnemonicParsing="false" text="Ja Box" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentJa">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Direct Zahl"
-                                                     fx:id="selectComponentDirectZahl"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectZahl">
+                                        <RadioButton fx:id="selectComponentDirectZahl" mnemonicParsing="false" text="Direct Zahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectZahl">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Direct String"
-                                                     fx:id="selectComponentDirectString"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectString">
+                                        <RadioButton fx:id="selectComponentDirectString" mnemonicParsing="false" text="Direct String" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectString">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Direct Date"
-                                                     fx:id="selectComponentDirectDate"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectDate">
+                                        <RadioButton fx:id="selectComponentDirectDate" mnemonicParsing="false" text="Direct Date" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentDirectDate">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Separator"
-                                                     fx:id="selectComponentSeparator"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentSeparator">
+                                        <RadioButton fx:id="selectComponentSeparator" mnemonicParsing="false" text="Separator" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentSeparator">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Indirect Zahl"
-                                                     fx:id="selectComponentIndirectZahl"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectZahl">
+                                        <RadioButton fx:id="selectComponentIndirectZahl" mnemonicParsing="false" text="Indirect Zahl" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectZahl">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Indirect String"
-                                                     fx:id="selectComponentIndirectString"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectString">
+                                        <RadioButton fx:id="selectComponentIndirectString" mnemonicParsing="false" text="Indirect String" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectString">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
-                                        <RadioButton mnemonicParsing="false" text="Indirect Date"
-                                                     fx:id="selectComponentIndirectDate"
-                                                     userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectDate">
+                                        <RadioButton fx:id="selectComponentIndirectDate" mnemonicParsing="false" text="Indirect Date" userData="ch.raiffeisen.ipricer.fxdesigner.component.DesignComponentIndirectDate">
                                             <font>
-                                                <Font size="19.0"/>
+                                                <Font size="19.0" />
                                             </font>
                                         </RadioButton>
                                     </children>
@@ -144,27 +120,19 @@
                             <items>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                     <children>
-                                        <TabPane fx:id="pageTabs" prefHeight="798.0" prefWidth="680.0"
-                                                 tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-25.0"
-                                                 AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                 AnchorPane.topAnchor="0.0">
+                                        <TabPane fx:id="pageTabs" prefHeight="798.0" prefWidth="680.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="-25.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <tabs>
                                                 <Tab fx:id="methodTab" text="Methode">
                                                     <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="770.0"
-                                                                    prefWidth="685.0">
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="770.0" prefWidth="685.0">
                                                             <children>
-                                                                <HBox prefHeight="28.0" prefWidth="820.0" alignment="CENTER_RIGHT">
+                                                                <HBox alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="820.0">
                                                                     <children>
-                                                                        <Button fx:id="addMethodgridColumn" onAction="#addColumnOnMethodGrid"/>
-                                                                        <Button fx:id="addMethodgridRow" onAction="#addRowOnMethodGrid"/>
+                                                                        <Button fx:id="addMethodgridColumn" onAction="#addColumnOnMethodGrid" />
+                                                                        <Button fx:id="addMethodgridRow" onAction="#addRowOnMethodGrid" />
                                                                     </children>
                                                                 </HBox>
-                                                                <GridPane fx:id="methodGrid" gridLinesVisible="true"
-                                                                          AnchorPane.bottomAnchor="30.0"
-                                                                          AnchorPane.leftAnchor="0.0"
-                                                                          AnchorPane.rightAnchor="0.0"
-                                                                          AnchorPane.topAnchor="30.0">
+                                                                <GridPane fx:id="methodGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
 
                                                                 </GridPane>
                                                             </children>
@@ -173,20 +141,15 @@
                                                 </Tab>
                                                 <Tab fx:id="parentTab" text="Parent">
                                                     <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
-                                                                    prefWidth="200.0">
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                             <children>
-                                                                <HBox prefHeight="28.0" prefWidth="820.0" alignment="CENTER_RIGHT">
+                                                                <HBox alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="820.0">
                                                                     <children>
-                                                                        <Button fx:id="addParentgridColumn" onAction="#addColumnOnParentGrid"/>
-                                                                        <Button fx:id="addParentgridRow" onAction="#addRowOnParentGrid"/>
+                                                                        <Button fx:id="addParentgridColumn" onAction="#addColumnOnParentGrid" />
+                                                                        <Button fx:id="addParentgridRow" onAction="#addRowOnParentGrid" />
                                                                     </children>
                                                                 </HBox>
-                                                                <GridPane fx:id="parentGrid" gridLinesVisible="true"
-                                                                          AnchorPane.bottomAnchor="30.0"
-                                                                          AnchorPane.leftAnchor="0.0"
-                                                                          AnchorPane.rightAnchor="0.0"
-                                                                          AnchorPane.topAnchor="30.0">
+                                                                <GridPane fx:id="parentGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
 
                                                                 </GridPane>
                                                             </children>
@@ -195,20 +158,15 @@
                                                 </Tab>
                                                 <Tab fx:id="childTab" text="Child">
                                                     <content>
-                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0"
-                                                                    prefWidth="200.0">
+                                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                             <children>
-                                                                <HBox prefHeight="28.0" prefWidth="820.0" alignment="CENTER_RIGHT">
+                                                                <HBox alignment="CENTER_RIGHT" prefHeight="28.0" prefWidth="820.0">
                                                                     <children>
-                                                                        <Button fx:id="addChildgridColumn" onAction="#addColumnOnChildGrid"/>
-                                                                        <Button fx:id="addChildgridRow" onAction="#addRowOnChildGrid"/>
+                                                                        <Button fx:id="addChildgridColumn" onAction="#addColumnOnChildGrid" />
+                                                                        <Button fx:id="addChildgridRow" onAction="#addRowOnChildGrid" />
                                                                     </children>
                                                                 </HBox>
-                                                                <GridPane fx:id="childGrid" gridLinesVisible="true"
-                                                                          AnchorPane.bottomAnchor="30.0"
-                                                                          AnchorPane.leftAnchor="0.0"
-                                                                          AnchorPane.rightAnchor="0.0"
-                                                                          AnchorPane.topAnchor="30.0">
+                                                                <GridPane fx:id="childGrid" gridLinesVisible="true" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
 
                                                                 </GridPane>
                                                             </children>
@@ -221,97 +179,76 @@
                                 </AnchorPane>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                                     <children>
-                                        <GridPane prefHeight="773.0" prefWidth="271.0" AnchorPane.bottomAnchor="0.0"
-                                                  AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                                                  AnchorPane.topAnchor="0.0">
+                                        <GridPane prefHeight="773.0" prefWidth="271.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <columnConstraints>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
-                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0"/>
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
                                             <rowConstraints>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
-                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                             <children>
-                                                <Label text="Datatype" GridPane.rowIndex="1"/>
-                                                <Label text="internalFieldName" GridPane.rowIndex="2"/>
-                                                <Label text="externalName" GridPane.rowIndex="3"/>
-                                                <Label text="Labeltext" GridPane.rowIndex="4"/>
-                                                <Label text="Role Access" GridPane.rowIndex="5"/>
-                                                <Label text="Record Type" GridPane.rowIndex="6"/>
-                                                <Label text="Max Length" GridPane.rowIndex="7"/>
-                                                <Label text="Width" GridPane.rowIndex="8"/>
-                                                <Label text="Procedurename for values" GridPane.rowIndex="9"/>
-                                                <Label text="strict" GridPane.rowIndex="10"/>
-                                                <Label text="init Value" GridPane.rowIndex="11"/>
-                                                <Label text="Separator" GridPane.rowIndex="12"/>
-                                                <Label text="show in underlyingList" GridPane.rowIndex="13"/>
-                                                <Label text="underlyingList Width" GridPane.rowIndex="14"/>
-                                                <Label text="show in optionList" GridPane.rowIndex="15"/>
-                                                <Label text="optionList Width" GridPane.rowIndex="16"/>
-                                                <Label text="grid X" GridPane.rowIndex="17"/>
-                                                <Label text="grid Y" GridPane.rowIndex="18"/>
+                                                <Label text="Datatype" GridPane.rowIndex="1" />
+                                                <Label text="internalFieldName" GridPane.rowIndex="2" />
+                                                <Label text="externalName" GridPane.rowIndex="3" />
+                                                <Label text="Labeltext" GridPane.rowIndex="4" />
+                                                <Label text="Role Access" GridPane.rowIndex="5" />
+                                                <Label text="Record Type" GridPane.rowIndex="6" />
+                                                <Label text="Max Length" GridPane.rowIndex="7" />
+                                                <Label text="Width" GridPane.rowIndex="8" />
+                                                <Label text="Procedurename for values" GridPane.rowIndex="9" />
+                                                <Label text="strict" GridPane.rowIndex="10" />
+                                                <Label text="init Value" GridPane.rowIndex="11" />
+                                                <Label text="Separator" GridPane.rowIndex="12" />
+                                                <Label text="show in underlyingList" GridPane.rowIndex="13" />
+                                                <Label text="underlyingList Width" GridPane.rowIndex="14" />
+                                                <Label text="show in optionList" GridPane.rowIndex="15" />
+                                                <Label text="optionList Width" GridPane.rowIndex="16" />
+                                                <Label text="grid X" GridPane.rowIndex="17" />
+                                                <Label text="grid Y" GridPane.rowIndex="18" />
 
-                                                <TextField fx:id="propertyInternalFieldname" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="2"/>
-                                                <TextField fx:id="propertyExternalName" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="3"/>
-                                                <TextField fx:id="propertyLabeltext" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="4"/>
-                                                <TextField fx:id="propertyMaxLength" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="7"/>
-                                                <TextField fx:id="propertyWidth" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="8"/>
-                                                <TextField fx:id="propertyProcedureName" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="9"/>
-                                                <TextField fx:id="propertyInitValue" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="11"/>
-                                                <TextField fx:id="propertyGridX" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="17" disable="true"/>
-                                                <TextField fx:id="propertyGridY" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="18" disable="true"/>
-                                                <CheckBox fx:id="propertyStrict" mnemonicParsing="false"
-                                                          GridPane.columnIndex="1" GridPane.rowIndex="10"/>
-                                                <ChoiceBox fx:id="propertyDatatype" prefWidth="150.0"
-                                                           GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                                                <ChoiceBox fx:id="propertyRoleAccess" prefWidth="150.0"
-                                                           GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-                                                <ChoiceBox fx:id="propertyRecordType" prefWidth="150.0"
-                                                           GridPane.columnIndex="1" GridPane.rowIndex="6"/>
-                                                <CheckBox fx:id="propertySeparator" mnemonicParsing="false"
-                                                          GridPane.columnIndex="1" GridPane.rowIndex="12"/>
-                                                <CheckBox fx:id="propertyShowInUnderlyingList" mnemonicParsing="false"
-                                                          GridPane.columnIndex="1" GridPane.rowIndex="13"/>
-                                                <CheckBox fx:id="propertyShowInOptionList" mnemonicParsing="false"
-                                                          GridPane.columnIndex="1" GridPane.rowIndex="15"/>
-                                                <TextField fx:id="propertyOptionListWidth" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="16"/>
-                                                <TextField fx:id="propertyUnderlyingListWidth" GridPane.columnIndex="1"
-                                                           GridPane.rowIndex="14"/>
-                                                <Button fx:id="propertiesUebernehmen" GridPane.columnIndex="1"
-                                                        GridPane.rowIndex="19"/>
+                                                <TextField fx:id="propertyInternalFieldname" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                <TextField fx:id="propertyExternalName" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                <TextField fx:id="propertyLabeltext" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                <TextField fx:id="propertyMaxLength" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                <TextField fx:id="propertyWidth" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                                                <TextField fx:id="propertyProcedureName" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+                                                <TextField fx:id="propertyInitValue" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+                                                <TextField fx:id="propertyGridX" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="17" />
+                                                <TextField fx:id="propertyGridY" disable="true" GridPane.columnIndex="1" GridPane.rowIndex="18" />
+                                                <CheckBox fx:id="propertyStrict" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+                                                <ChoiceBox fx:id="propertyDatatype" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                <ChoiceBox fx:id="propertyRoleAccess" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                <ChoiceBox fx:id="propertyRecordType" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                <CheckBox fx:id="propertySeparator" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="12" />
+                                                <CheckBox fx:id="propertyShowInUnderlyingList" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="13" />
+                                                <CheckBox fx:id="propertyShowInOptionList" mnemonicParsing="false" GridPane.columnIndex="1" GridPane.rowIndex="15" />
+                                                <TextField fx:id="propertyOptionListWidth" GridPane.columnIndex="1" GridPane.rowIndex="16" />
+                                                <TextField fx:id="propertyUnderlyingListWidth" GridPane.columnIndex="1" GridPane.rowIndex="14" />
+                                                <Button fx:id="propertiesUebernehmen" GridPane.columnIndex="1" GridPane.rowIndex="19" />
                                             </children>
                                             <padding>
-                                                <Insets left="7.0" right="7.0"/>
+                                                <Insets left="7.0" right="7.0" />
                                             </padding>
                                         </GridPane>
                                     </children>

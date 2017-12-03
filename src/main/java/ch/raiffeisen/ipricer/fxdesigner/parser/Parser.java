@@ -9,6 +9,7 @@ import ch.raiffeisen.ipricer.fxdesigner.component.base.DesignComponent;
 import ch.raiffeisen.ipricer.fxdesigner.domain.*;
 import ch.raiffeisen.ipricer.fxdesigner.generator.MethodProperties;
 import ch.raiffeisen.ipricer.fxdesigner.ui.GridHelper;
+import javafx.concurrent.Task;
 import javafx.scene.layout.GridPane;
 import org.eclipse.emf.common.util.EList;
 
@@ -25,8 +26,11 @@ public class Parser {
     Map<String, DesignComponent> componentByInternalName = new HashMap<>();
 
 
-    public Parser(FXDesigner fxDesigner, File file) {
+    public Parser(FXDesigner fxDesigner) {
         this.fxDesigner = fxDesigner;
+    }
+
+    public void readDefinitionFile(File file) {
         DefinitionDSL dsl = new DefinitionDSL();
         DefinitionImpl definition = dsl.parseDefinition(file.toURI(), ENCODING);
 
@@ -43,7 +47,10 @@ public class Parser {
 
         readInitSection(definition.getInitSection());
 
+
     }
+
+
 
     private void readInitSection(InitSection initSection) {
         if (initSection == null || initSection.getInitDefinitions() == null) {
@@ -296,4 +303,6 @@ public class Parser {
 
         fxDesigner.setMethodProperties(mp);
     }
+
+
 }

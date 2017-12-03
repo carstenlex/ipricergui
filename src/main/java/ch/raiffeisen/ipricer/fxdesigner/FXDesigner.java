@@ -215,6 +215,8 @@ public class FXDesigner extends Application implements Initializable {
     public RadioButton selectComponentJa;
 
 
+    ProgressBar loadingIndicator;
+
     public DesignComponent selectedDesignComponent;
 
     FileChooser fileChooser = new FileChooser();
@@ -272,14 +274,26 @@ public class FXDesigner extends Application implements Initializable {
 
     public void setDefinitionFile(File file) {
         definitionFileSave = file;
-        Stage window = (Stage) appPane.getScene().getWindow();
+        Stage window = (Stage) getWindow();
         window.setTitle("GUIDesigner - Target Definitionfile: " + file.getAbsolutePath());
     }
 
     public void openDefinitionFile(ActionEvent actionEvent) {
         File file = fileChooser.showOpenDialog(null);
-        Parser parser = new Parser(this, file);
+
+        Popup loading = createLoadingIndicatorPopup();
+
+        Parser parser = new Parser(this);
+        parser.readDefinitionFile(file);
         setDefinitionFile(file);
+
+        Platform.runLater(() -> loading.hide());
+
+    }
+
+
+    private Window getWindow() {
+        return appPane.getScene().getWindow();
     }
 
 
@@ -323,8 +337,8 @@ public class FXDesigner extends Application implements Initializable {
         gridFromPage.put(Page.CHILD, childGrid);
 
         Image ok = new Image(getClass().getResourceAsStream("/img/ok.png"), 30, 30, true, true);
-        Image addCol =new Image(getClass().getResourceAsStream("/img/addColumn.png"), 20, 20, true, true);
-        Image addRow =new Image(getClass().getResourceAsStream("/img/addRow.png"), 20, 20, true, true);
+        Image addCol = new Image(getClass().getResourceAsStream("/img/addColumn.png"), 20, 20, true, true);
+        Image addRow = new Image(getClass().getResourceAsStream("/img/addRow.png"), 20, 20, true, true);
 
         addMethodgridColumn.setGraphic(new ImageView(addCol));
         addParentgridColumn.setGraphic(new ImageView(addCol));
@@ -332,6 +346,8 @@ public class FXDesigner extends Application implements Initializable {
         addMethodgridRow.setGraphic(new ImageView(addRow));
         addParentgridRow.setGraphic(new ImageView(addRow));
         addChildgridRow.setGraphic(new ImageView(addRow));
+
+
 
         propertiesUebernehmen.setGraphic(new ImageView(ok));
         propertiesUebernehmen.setOnAction(event -> {
@@ -366,7 +382,7 @@ public class FXDesigner extends Application implements Initializable {
         grid.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Point zelle = GridHelper.getGridZelleFromMouseclick(grid,event);
+                Point zelle = GridHelper.getGridZelleFromMouseclick(grid, event);
 
                 Node componentInZelle = GridHelper.getNodeFromGridPane(grid, zelle.x, zelle.y);
                 if (componentInZelle != null) {
@@ -400,13 +416,6 @@ public class FXDesigner extends Application implements Initializable {
     }
 
 
-
-
-
-
-
-
-
     public void showProperties(IPricerProperties properties, Page page) {
         propertyRecordType.getItems().clear();
         propertyRecordType.getItems().addAll(page.getRecordTypes());
@@ -436,10 +445,9 @@ public class FXDesigner extends Application implements Initializable {
     }
 
 
-
     public void generateJava(ActionEvent actionEvent) {
         GeneratorJavaFile gjf = new GeneratorJavaFile();
-                gjf.write(definitionFileSave);
+        gjf.write(definitionFileSave);
     }
 
     public void setMethodProperties(MethodProperties mp) {
@@ -448,8 +456,6 @@ public class FXDesigner extends Application implements Initializable {
         this.methodLabel.setText(mp.methodLabel);
         this.methodName.setText(mp.methodName);
     }
-
-
 
 
     public void addColumnOnMethodGrid(ActionEvent actionEvent) {
@@ -477,12 +483,32 @@ public class FXDesigner extends Application implements Initializable {
     }
 
     public List<DesignComponent> getAllDesignComponents() {
-        return GridHelper.getAllDesignComponents(methodGrid,parentGrid,childGrid);
+        return GridHelper.getAllDesignComponents(methodGrid, parentGrid, childGrid);
+    }
+
+
+    public Popup createLoadingIndicatorPopup(){
+        Window window = getWindow();
+        Popup popup = new Popup();
+        popup.setX(300);
+        popup.setY(200);
+
+
+        VBox vbox = new VBox();
+        ProgressBar progress = new ProgressBar();
+        progress.setPrefHeight(20.0);
+        progress.setPrefWidth(200.0);
+        vbox.getChildren().add(progress);
+
+        popup.getContent().add(vbox);
+
+        popup.show(window);
+        return popup;
     }
 
     public void generateFIDSnippet(ActionEvent actionEvent) {
 
-        Window window = appPane.getScene().getWindow();
+        Window window = getWindow();
         Popup popup = new Popup();
         popup.setX(300);
         popup.setY(200);
@@ -500,21 +526,25 @@ public class FXDesigner extends Application implements Initializable {
         generatedFIDs.setPrefRowCount(20);
 
         generate.setOnAction(event -> {
+            String methodNameText = methodName.getText();
+            String header = "# #################################################\n";
+            header += "# #############  " + methodNameText + " Methode  #########################\n";
+            header += "# #################################################\n";
             generatedFIDs.setText("");
             AtomicInteger startingFid = new AtomicInteger();
             try {
-                startingFid.set( Integer.parseInt(startingFidInput.getText()));
+                startingFid.set(Integer.parseInt(startingFidInput.getText()));
             } catch (NumberFormatException e) {
                 startingFid.set(0);
             }
             String collect = GridHelper.getAllDesignComponents(methodGrid, parentGrid, childGrid).stream()
                     .map(designComponent -> designComponent.properties.externalName)
                     .sorted()
-                    .map(externalName -> externalName + "  " + (startingFid.getAndIncrement()) + " ALPHANUMERIC")
+                    .map(externalName -> externalName + "      " + (startingFid.getAndIncrement()) + "        ALPHANUMERIC   OVERLAY    " + externalName)
                     .collect(Collectors.joining("\n"));
 
 
-            generatedFIDs.setText(collect);
+            generatedFIDs.setText(header + collect);
         });
 
         hbox.getChildren().add(label);
